@@ -62,7 +62,8 @@ export default function Notifications() {
 
   const markAsRead = async (notificationId: string) => {
     try {
-      await fetch("/api/notifications/read", {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      await fetch(`${apiUrl}/api/notifications/read`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: "user_1", notificationId }),
@@ -75,7 +76,13 @@ export default function Notifications() {
       );
       setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      console.error("Error marking notification as read:", error);
+      // Still update UI locally even if API fails
+      setNotifications((prev) =>
+        prev.map((notif) =>
+          notif.id === notificationId ? { ...notif, isRead: true } : notif,
+        ),
+      );
+      setUnreadCount((prev) => Math.max(0, prev - 1));
     }
   };
 
