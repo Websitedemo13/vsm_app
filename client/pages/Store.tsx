@@ -128,9 +128,54 @@ export default function Store() {
     }
   ];
 
-  const addToCart = (productId: number) => {
+  const addToCart = (productId: number, price: number) => {
     setCartCount(prev => prev + 1);
+    setCartTotal(prev => prev + price);
+
+    toast({
+      title: "Đã thêm vào giỏ hàng",
+      description: "Sản phẩm đã được thêm vào giỏ hàng của bạn"
+    });
   };
+
+  const applyVoucher = (voucher: Voucher) => {
+    if (voucher.minimumAmount && cartTotal < voucher.minimumAmount) {
+      toast({
+        title: "Không thể áp dụng voucher",
+        description: `Đơn hàng tối thiểu ${voucher.minimumAmount.toLocaleString()}đ`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setSelectedVoucher(voucher);
+    setShowVouchers(false);
+
+    toast({
+      title: "Áp dụng voucher thành công!",
+      description: `Voucher "${voucher.code}" đã được áp dụng`
+    });
+  };
+
+  const removeVoucher = () => {
+    setSelectedVoucher(null);
+    toast({
+      title: "Đã hủy voucher",
+      description: "Voucher đã được gỡ bỏ khỏi đơn hàng"
+    });
+  };
+
+  const calculateDiscount = () => {
+    if (!selectedVoucher) return 0;
+
+    if (selectedVoucher.discountType === "percentage") {
+      return Math.min(cartTotal * (selectedVoucher.discountValue / 100), cartTotal);
+    } else {
+      return Math.min(selectedVoucher.discountValue, cartTotal);
+    }
+  };
+
+  const finalTotal = cartTotal - calculateDiscount();
 
   return (
     <div className="min-h-screen bg-gray-50">
