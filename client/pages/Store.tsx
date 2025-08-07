@@ -43,11 +43,26 @@ export default function Store() {
 
   const fetchVouchers = async () => {
     try {
-      const response = await fetch("/api/vouchers/user_1");
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await fetch(`${apiUrl}/api/vouchers/user_1`);
+
+      if (!response.ok) {
+        // Use mock vouchers if backend not available
+        setAvailableVouchers([
+          { id: "1", title: "Giảm 50k cho đơn từ 300k", discount: 50000, minSpend: 300000, validUntil: "2024-12-31" },
+          { id: "2", title: "Free shipping toàn quốc", discount: 30000, minSpend: 200000, validUntil: "2024-12-25" }
+        ]);
+        return;
+      }
+
       const data = await response.json();
       setAvailableVouchers(data.vouchers || []);
     } catch (error) {
-      console.error("Error fetching vouchers:", error);
+      // Use mock vouchers on error
+      setAvailableVouchers([
+        { id: "1", title: "Giảm 50k cho đơn từ 300k", discount: 50000, minSpend: 300000, validUntil: "2024-12-31" },
+        { id: "2", title: "Free shipping toàn quốc", discount: 30000, minSpend: 200000, validUntil: "2024-12-25" }
+      ]);
     }
   };
 
