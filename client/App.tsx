@@ -25,6 +25,8 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Community from "./pages/Community";
 import MobileApp from "./pages/MobileApp";
+import AdminDashboard from "./pages/AdminDashboard";
+import EditorDashboard from "./pages/EditorDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -70,6 +72,12 @@ const App = () => (
                       {/* Premium routes - require premium subscription */}
                       <Route path="/segments" element={<AuthGuard requiresPremium><Segments /></AuthGuard>} />
                       <Route path="/analytics" element={<AuthGuard requiresPremium><Analytics /></AuthGuard>} />
+
+                      {/* Admin routes - require admin role */}
+                      <Route path="/admin" element={<AuthGuard requiresRole="admin"><AdminDashboard /></AuthGuard>} />
+
+                      {/* Editor routes - require editor or admin role */}
+                      <Route path="/editor" element={<AuthGuard requiresRole="editor"><EditorDashboard /></AuthGuard>} />
 
                       <Route path="*" element={<NotFound />} />
                     </Routes>
