@@ -83,11 +83,11 @@ export default function Profile() {
       university: "Đại học Kinh tế TP.HCM",
       studentId: "1234567",
       isPremium: false,
-      joinDate: Date.now() - 86400000 * 30
+      joinDate: Date.now() - 86400000 * 30,
     };
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 2000);
@@ -95,14 +95,14 @@ export default function Profile() {
       const response = await fetch(`${apiUrl}/api/user/user_1`, {
         signal: controller.signal,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error('Backend response not ok');
+        throw new Error("Backend response not ok");
       }
 
       const data = await response.json();
@@ -115,7 +115,7 @@ export default function Profile() {
 
   const fetchTrainingPlans = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/training-plans/user_1`);
 
       if (!response.ok) {
@@ -132,7 +132,7 @@ export default function Profile() {
 
   const fetchVouchers = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/vouchers/user_1`);
 
       if (!response.ok) {
@@ -149,7 +149,7 @@ export default function Profile() {
 
   const fetchRunHistory = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/run/history/user_1`);
 
       if (!response.ok) {
@@ -167,7 +167,7 @@ export default function Profile() {
   const upgradeToPremium = async () => {
     setIsUpgrading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/user/upgrade`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

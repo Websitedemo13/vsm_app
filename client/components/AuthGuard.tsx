@@ -17,14 +17,14 @@ import {
   UserPlus,
   AlertCircle,
 } from "lucide-react";
-import { supabase, Profile } from '../lib/supabase';
-import { User as SupabaseUser } from '@supabase/supabase-js';
+import { supabase, Profile } from "../lib/supabase";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'user' | 'editor' | 'admin';
+  role: "user" | "editor" | "admin";
   isPremium: boolean;
   avatar?: string;
   profile?: Profile;
@@ -59,7 +59,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         setSupabaseUser(session.user);
         await loadUserProfile(session.user.id);
@@ -76,9 +78,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const loadUserProfile = async (userId: string) => {
     try {
       const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
+        .from("profiles")
+        .select("*")
+        .eq("id", userId)
         .single();
 
       if (error) throw error;
@@ -96,14 +98,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(userData);
       }
     } catch (error) {
-      console.error('Error loading user profile:', error);
+      console.error("Error loading user profile:", error);
       // Fallback for development - create basic user
       if (supabaseUser) {
         const userData: User = {
           id: supabaseUser.id,
-          email: supabaseUser.email || '',
-          name: supabaseUser.user_metadata?.full_name || 'User',
-          role: 'user',
+          email: supabaseUser.email || "",
+          name: supabaseUser.user_metadata?.full_name || "User",
+          role: "user",
           isPremium: false,
         };
         setUser(userData);
@@ -127,10 +129,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         await loadUserProfile(data.user.id);
         return true;
       }
-      
+
       return false;
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
       return false;
     }
   };
@@ -141,7 +143,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
       setSupabaseUser(null);
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   };
 
@@ -149,19 +151,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (user && user.profile) {
       try {
         const { error } = await supabase
-          .from('profiles')
+          .from("profiles")
           .update({
             full_name: userData.name,
             avatar_url: userData.avatar,
           })
-          .eq('id', user.id);
+          .eq("id", user.id);
 
         if (error) throw error;
 
         const updatedUser = { ...user, ...userData };
         setUser(updatedUser);
       } catch (error) {
-        console.error('Failed to update user:', error);
+        console.error("Failed to update user:", error);
       }
     }
   };
@@ -190,7 +192,7 @@ export const useAuth = () => {
 interface AuthGuardProps {
   children: ReactNode;
   requiresPremium?: boolean;
-  requiresRole?: 'editor' | 'admin';
+  requiresRole?: "editor" | "admin";
   fallback?: "login" | "preview";
 }
 
@@ -220,16 +222,16 @@ export const AuthGuard = ({
 
   // Check role requirements
   if (requiresRole && user) {
-    if (requiresRole === 'admin' && user.role !== 'admin') {
+    if (requiresRole === "admin" && user.role !== "admin") {
       return <RoleRequired requiredRole="admin" />;
     }
-    if (requiresRole === 'editor' && !['editor', 'admin'].includes(user.role)) {
+    if (requiresRole === "editor" && !["editor", "admin"].includes(user.role)) {
       return <RoleRequired requiredRole="editor" />;
     }
   }
 
   // Authenticated but requires Premium (unless admin)
-  if (requiresPremium && user && !user.isPremium && user.role !== 'admin') {
+  if (requiresPremium && user && !user.isPremium && user.role !== "admin") {
     return <PremiumRequired />;
   }
 
@@ -334,7 +336,8 @@ const RoleRequired = ({ requiredRole }: { requiredRole: string }) => {
             Quyền truy cập bị hạn chế
           </CardTitle>
           <p className="text-gray-600">
-            Chức năng này chỉ dành cho {requiredRole === 'admin' ? 'Admin' : 'Editor/Admin'}
+            Chức năng này chỉ dành cho{" "}
+            {requiredRole === "admin" ? "Admin" : "Editor/Admin"}
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -387,7 +390,9 @@ const PremiumRequired = () => {
               </span>
             </div>
             <div className="text-3xl font-bold text-vsm-orange">299,000đ</div>
-            <div className="text-sm text-gray-600">một năm • không giới hạn</div>
+            <div className="text-sm text-gray-600">
+              một năm • không giới hạn
+            </div>
             <Badge className="mt-2 bg-red-100 text-red-700">
               Tiết kiệm 60% so với gói tháng
             </Badge>

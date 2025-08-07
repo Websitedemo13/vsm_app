@@ -38,14 +38,14 @@ export default function Navigation() {
     // Fetch notification count
     const fetchNotificationCount = async () => {
       // Check if we should use mock API only
-      if (import.meta.env.VITE_MOCK_API === 'true') {
+      if (import.meta.env.VITE_MOCK_API === "true") {
         setNotificationCount(3);
         return;
       }
 
       try {
         // Use proper API URL or mock data if backend not available
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
         // Set a shorter timeout to fail fast if backend not available
         const controller = new AbortController();
@@ -54,14 +54,14 @@ export default function Navigation() {
         const response = await fetch(`${apiUrl}/api/notifications/user_1`, {
           signal: controller.signal,
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
 
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-          throw new Error('Backend response not ok');
+          throw new Error("Backend response not ok");
         }
 
         const data = await response.json();

@@ -32,17 +32,20 @@ const getMockNotifications = (): Notification[] => [
   {
     id: "1",
     title: "🏃‍♂️ New Event: Marathon UEH 2024",
-    message: "Đăng ký ngay để nhận ưu đãi sớm cho Marathon UEH 2024. Chỉ còn 100 suất!",
+    message:
+      "Đăng ký ngay để nhận ưu đãi sớm cho Marathon UEH 2024. Chỉ còn 100 suất!",
     type: "event",
     timestamp: Date.now() - 3600000,
     isRead: false,
     actionUrl: "/events",
-    imageUrl: "https://images.unsplash.com/photo-1544737151360-6cb71a04d2e4?w=100&h=100&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1544737151360-6cb71a04d2e4?w=100&h=100&fit=crop",
   },
   {
     id: "2",
     title: "🎁 Premium Upgrade Available",
-    message: "Nâng cấp Premium ngay với giá ưu đãi 299,000đ để unlock tất cả tính n��ng!",
+    message:
+      "Nâng cấp Premium ngay với giá ưu đãi 299,000đ để unlock tất cả tính n��ng!",
     type: "product",
     timestamp: Date.now() - 7200000,
     isRead: false,
@@ -51,7 +54,8 @@ const getMockNotifications = (): Notification[] => [
   {
     id: "3",
     title: "📊 Weekly Report Ready",
-    message: "Báo cáo hoạt động tuần này đã sẵn sàng. Xem ngay để theo dõi tiến độ!",
+    message:
+      "Báo cáo hoạt động tuần này đã sẵn sàng. Xem ngay để theo dõi tiến độ!",
     type: "update",
     timestamp: Date.now() - 86400000,
     isRead: true,
@@ -72,7 +76,7 @@ export default function Notifications() {
   const fetchNotifications = async () => {
     try {
       // Use proper API URL or mock data if backend not available
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 2000);
@@ -80,14 +84,14 @@ export default function Notifications() {
       const response = await fetch(`${apiUrl}/api/notifications/user_1`, {
         signal: controller.signal,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error('Backend response not ok');
+        throw new Error("Backend response not ok");
       }
 
       const data = await response.json();
@@ -110,7 +114,7 @@ export default function Notifications() {
     setUnreadCount((prev) => Math.max(0, prev - 1));
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 1000);
@@ -141,7 +145,7 @@ export default function Notifications() {
     });
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 1000);

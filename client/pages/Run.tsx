@@ -115,7 +115,7 @@ export default function Run() {
 
   const fetchRunHistory = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/run/history/user_1`);
 
       if (!response.ok) {
@@ -141,7 +141,7 @@ export default function Run() {
     }
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/run/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -204,7 +204,7 @@ export default function Run() {
     setCurrentPosition(pos);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/run/position`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -283,7 +283,7 @@ export default function Run() {
     if (!sessionId) return;
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
       const response = await fetch(`${apiUrl}/api/run/end`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

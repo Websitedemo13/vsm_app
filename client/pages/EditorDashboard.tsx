@@ -1,14 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import {
   Edit,
   Plus,
@@ -24,9 +51,9 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
-} from 'lucide-react';
-import { api } from '../lib/api';
-import { BlogPost, Order, SupportTicket } from '../lib/supabase';
+} from "lucide-react";
+import { api } from "../lib/api";
+import { BlogPost, Order, SupportTicket } from "../lib/supabase";
 
 interface CreatePostData {
   title: string;
@@ -42,23 +69,25 @@ export default function EditorDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('posts');
-  
+  const [activeTab, setActiveTab] = useState("posts");
+
   // Post management
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [postForm, setPostForm] = useState<CreatePostData>({
-    title: '',
-    content: '',
-    excerpt: '',
-    featured_image: '',
-    category: 'general',
+    title: "",
+    content: "",
+    excerpt: "",
+    featured_image: "",
+    category: "general",
     tags: [],
   });
 
   // Support management
-  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
-  const [response, setResponse] = useState('');
+  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(
+    null,
+  );
+  const [response, setResponse] = useState("");
 
   useEffect(() => {
     loadDashboardData();
@@ -67,19 +96,19 @@ export default function EditorDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      
-      if (activeTab === 'posts') {
+
+      if (activeTab === "posts") {
         const postsResponse = await api.getBlogPosts({ limit: 50 });
         setPosts(postsResponse.posts || []);
-      } else if (activeTab === 'orders') {
+      } else if (activeTab === "orders") {
         const ordersResponse = await api.getOrders({ limit: 50 });
         setOrders(ordersResponse.orders || []);
-      } else if (activeTab === 'support') {
+      } else if (activeTab === "support") {
         const ticketsResponse = await api.getSupportTickets({ limit: 50 });
         setTickets(ticketsResponse.tickets || []);
       }
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+      console.error("Failed to load dashboard data:", error);
     } finally {
       setLoading(false);
     }
@@ -90,28 +119,28 @@ export default function EditorDashboard() {
       await api.createBlogPost(postForm);
       setShowCreatePost(false);
       setPostForm({
-        title: '',
-        content: '',
-        excerpt: '',
-        featured_image: '',
-        category: 'general',
+        title: "",
+        content: "",
+        excerpt: "",
+        featured_image: "",
+        category: "general",
         tags: [],
       });
       loadDashboardData();
     } catch (error) {
-      console.error('Failed to create post:', error);
+      console.error("Failed to create post:", error);
     }
   };
 
   const handleUpdatePost = async () => {
     if (!selectedPost) return;
-    
+
     try {
       await api.updateBlogPost(selectedPost.id, postForm);
       setSelectedPost(null);
       loadDashboardData();
     } catch (error) {
-      console.error('Failed to update post:', error);
+      console.error("Failed to update post:", error);
     }
   };
 
@@ -120,7 +149,7 @@ export default function EditorDashboard() {
       await api.publishBlogPost(postId);
       loadDashboardData();
     } catch (error) {
-      console.error('Failed to publish post:', error);
+      console.error("Failed to publish post:", error);
     }
   };
 
@@ -129,7 +158,7 @@ export default function EditorDashboard() {
       await api.deleteBlogPost(postId);
       loadDashboardData();
     } catch (error) {
-      console.error('Failed to delete post:', error);
+      console.error("Failed to delete post:", error);
     }
   };
 
@@ -138,7 +167,7 @@ export default function EditorDashboard() {
       await api.updateOrderStatus(orderId, status);
       loadDashboardData();
     } catch (error) {
-      console.error('Failed to update order status:', error);
+      console.error("Failed to update order status:", error);
     }
   };
 
@@ -148,37 +177,59 @@ export default function EditorDashboard() {
     try {
       await api.respondToTicket(selectedTicket.id, response);
       setSelectedTicket(null);
-      setResponse('');
+      setResponse("");
       loadDashboardData();
     } catch (error) {
-      console.error('Failed to respond to ticket:', error);
+      console.error("Failed to respond to ticket:", error);
     }
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(amount);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN');
+    return new Date(dateString).toLocaleDateString("vi-VN");
   };
 
   const getStatusBadge = (status: string) => {
-    const variants: { [key: string]: { variant: any; icon: React.ReactNode } } = {
-      published: { variant: 'default', icon: <CheckCircle className="w-3 h-3 mr-1" /> },
-      draft: { variant: 'secondary', icon: <Clock className="w-3 h-3 mr-1" /> },
-      pending: { variant: 'secondary', icon: <Clock className="w-3 h-3 mr-1" /> },
-      paid: { variant: 'default', icon: <CheckCircle className="w-3 h-3 mr-1" /> },
-      failed: { variant: 'destructive', icon: <AlertCircle className="w-3 h-3 mr-1" /> },
-      open: { variant: 'secondary', icon: <MessageSquare className="w-3 h-3 mr-1" /> },
-      resolved: { variant: 'default', icon: <CheckCircle className="w-3 h-3 mr-1" /> },
-    };
+    const variants: { [key: string]: { variant: any; icon: React.ReactNode } } =
+      {
+        published: {
+          variant: "default",
+          icon: <CheckCircle className="w-3 h-3 mr-1" />,
+        },
+        draft: {
+          variant: "secondary",
+          icon: <Clock className="w-3 h-3 mr-1" />,
+        },
+        pending: {
+          variant: "secondary",
+          icon: <Clock className="w-3 h-3 mr-1" />,
+        },
+        paid: {
+          variant: "default",
+          icon: <CheckCircle className="w-3 h-3 mr-1" />,
+        },
+        failed: {
+          variant: "destructive",
+          icon: <AlertCircle className="w-3 h-3 mr-1" />,
+        },
+        open: {
+          variant: "secondary",
+          icon: <MessageSquare className="w-3 h-3 mr-1" />,
+        },
+        resolved: {
+          variant: "default",
+          icon: <CheckCircle className="w-3 h-3 mr-1" />,
+        },
+      };
 
-    const config = variants[status] || { variant: 'outline', icon: null };
-    
+    const config = variants[status] || { variant: "outline", icon: null };
+
     return (
       <Badge variant={config.variant}>
         {config.icon}
@@ -190,11 +241,19 @@ export default function EditorDashboard() {
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Editor Dashboard</h1>
-        <p className="text-gray-600">Quản lý nội dung, đơn hàng và hỗ trợ khách hàng</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Editor Dashboard
+        </h1>
+        <p className="text-gray-600">
+          Quản lý nội dung, đơn hàng và hỗ trợ khách hàng
+        </p>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="posts">Quản Lý Blog</TabsTrigger>
           <TabsTrigger value="orders">Đơn Hàng</TabsTrigger>
@@ -232,7 +291,9 @@ export default function EditorDashboard() {
                         <Input
                           id="title"
                           value={postForm.title}
-                          onChange={(e) => setPostForm({ ...postForm, title: e.target.value })}
+                          onChange={(e) =>
+                            setPostForm({ ...postForm, title: e.target.value })
+                          }
                           placeholder="Nhập tiêu đề bài viết..."
                         />
                       </div>
@@ -241,7 +302,12 @@ export default function EditorDashboard() {
                         <Textarea
                           id="excerpt"
                           value={postForm.excerpt}
-                          onChange={(e) => setPostForm({ ...postForm, excerpt: e.target.value })}
+                          onChange={(e) =>
+                            setPostForm({
+                              ...postForm,
+                              excerpt: e.target.value,
+                            })
+                          }
                           placeholder="Tóm tắt ngắn gọn về bài viết..."
                           rows={3}
                         />
@@ -251,7 +317,12 @@ export default function EditorDashboard() {
                         <Textarea
                           id="content"
                           value={postForm.content}
-                          onChange={(e) => setPostForm({ ...postForm, content: e.target.value })}
+                          onChange={(e) =>
+                            setPostForm({
+                              ...postForm,
+                              content: e.target.value,
+                            })
+                          }
                           placeholder="Viết nội dung đầy đủ của bài viết..."
                           rows={10}
                         />
@@ -259,14 +330,23 @@ export default function EditorDashboard() {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="category">Danh mục</Label>
-                          <Select value={postForm.category} onValueChange={(value) => setPostForm({ ...postForm, category: value })}>
+                          <Select
+                            value={postForm.category}
+                            onValueChange={(value) =>
+                              setPostForm({ ...postForm, category: value })
+                            }
+                          >
                             <SelectTrigger>
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="general">Tổng quát</SelectItem>
-                              <SelectItem value="training">Tập luyện</SelectItem>
-                              <SelectItem value="nutrition">Dinh dưỡng</SelectItem>
+                              <SelectItem value="training">
+                                Tập luyện
+                              </SelectItem>
+                              <SelectItem value="nutrition">
+                                Dinh dưỡng
+                              </SelectItem>
                               <SelectItem value="gear">Thiết bị</SelectItem>
                               <SelectItem value="events">Sự kiện</SelectItem>
                             </SelectContent>
@@ -277,19 +357,25 @@ export default function EditorDashboard() {
                           <Input
                             id="featured_image"
                             value={postForm.featured_image}
-                            onChange={(e) => setPostForm({ ...postForm, featured_image: e.target.value })}
+                            onChange={(e) =>
+                              setPostForm({
+                                ...postForm,
+                                featured_image: e.target.value,
+                              })
+                            }
                             placeholder="https://example.com/image.jpg"
                           />
                         </div>
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline" onClick={() => setShowCreatePost(false)}>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowCreatePost(false)}
+                      >
                         Hủy
                       </Button>
-                      <Button onClick={handleCreatePost}>
-                        Tạo bài viết
-                      </Button>
+                      <Button onClick={handleCreatePost}>Tạo bài viết</Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -313,14 +399,18 @@ export default function EditorDashboard() {
                         <TableCell>
                           <div className="space-y-1">
                             <div className="font-medium">{post.title}</div>
-                            <div className="text-sm text-gray-500 line-clamp-2">{post.excerpt}</div>
+                            <div className="text-sm text-gray-500 line-clamp-2">
+                              {post.excerpt}
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>
                           <Badge variant="outline">{post.category}</Badge>
                         </TableCell>
                         <TableCell>
-                          {getStatusBadge(post.published ? 'published' : 'draft')}
+                          {getStatusBadge(
+                            post.published ? "published" : "draft",
+                          )}
                         </TableCell>
                         <TableCell>{formatDate(post.created_at)}</TableCell>
                         <TableCell className="text-right">
@@ -333,8 +423,8 @@ export default function EditorDashboard() {
                                 setPostForm({
                                   title: post.title,
                                   content: post.content,
-                                  excerpt: post.excerpt || '',
-                                  featured_image: post.featured_image || '',
+                                  excerpt: post.excerpt || "",
+                                  featured_image: post.featured_image || "",
                                   category: post.category,
                                   tags: post.tags,
                                 });
@@ -396,28 +486,36 @@ export default function EditorDashboard() {
                     {orders.map((order) => (
                       <TableRow key={order.id}>
                         <TableCell>
-                          <div className="font-mono text-sm">{order.order_number}</div>
+                          <div className="font-mono text-sm">
+                            {order.order_number}
+                          </div>
                         </TableCell>
                         <TableCell>
                           <div className="space-y-1">
-                            <div className="font-medium">{order.profiles?.full_name}</div>
-                            <div className="text-sm text-gray-500">{order.profiles?.email}</div>
+                            <div className="font-medium">
+                              {order.profiles?.full_name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {order.profiles?.email}
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>
                           <Badge variant="outline">{order.product_type}</Badge>
                         </TableCell>
                         <TableCell>
-                          <div className="font-medium">{formatCurrency(order.amount)}</div>
+                          <div className="font-medium">
+                            {formatCurrency(order.amount)}
+                          </div>
                         </TableCell>
-                        <TableCell>
-                          {getStatusBadge(order.status)}
-                        </TableCell>
+                        <TableCell>{getStatusBadge(order.status)}</TableCell>
                         <TableCell>{formatDate(order.created_at)}</TableCell>
                         <TableCell className="text-right">
                           <Select
                             value={order.status}
-                            onValueChange={(status) => handleUpdateOrderStatus(order.id, status)}
+                            onValueChange={(status) =>
+                              handleUpdateOrderStatus(order.id, status)
+                            }
                           >
                             <SelectTrigger className="w-32">
                               <SelectValue />
@@ -467,27 +565,35 @@ export default function EditorDashboard() {
                         <TableCell>
                           <div className="space-y-1">
                             <div className="font-medium">{ticket.subject}</div>
-                            <div className="text-sm text-gray-500 line-clamp-2">{ticket.message}</div>
+                            <div className="text-sm text-gray-500 line-clamp-2">
+                              {ticket.message}
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="space-y-1">
-                            <div className="font-medium">{ticket.profiles?.full_name}</div>
-                            <div className="text-sm text-gray-500">{ticket.profiles?.email}</div>
+                            <div className="font-medium">
+                              {ticket.profiles?.full_name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {ticket.profiles?.email}
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge 
-                            variant={ticket.priority === 'high' ? 'destructive' : 
-                                   ticket.priority === 'urgent' ? 'destructive' :
-                                   'secondary'}
+                          <Badge
+                            variant={
+                              ticket.priority === "high"
+                                ? "destructive"
+                                : ticket.priority === "urgent"
+                                  ? "destructive"
+                                  : "secondary"
+                            }
                           >
                             {ticket.priority}
                           </Badge>
                         </TableCell>
-                        <TableCell>
-                          {getStatusBadge(ticket.status)}
-                        </TableCell>
+                        <TableCell>{getStatusBadge(ticket.status)}</TableCell>
                         <TableCell>{formatDate(ticket.created_at)}</TableCell>
                         <TableCell className="text-right">
                           <Dialog>
@@ -504,27 +610,39 @@ export default function EditorDashboard() {
                               <DialogHeader>
                                 <DialogTitle>Trả lời hỗ trợ</DialogTitle>
                                 <DialogDescription>
-                                  Phản hồi yêu cầu từ {ticket.profiles?.full_name}
+                                  Phản hồi yêu cầu từ{" "}
+                                  {ticket.profiles?.full_name}
                                 </DialogDescription>
                               </DialogHeader>
                               <div className="space-y-4">
                                 <div className="p-4 bg-gray-50 rounded-lg">
-                                  <div className="font-medium mb-2">{ticket.subject}</div>
-                                  <div className="text-sm text-gray-700">{ticket.message}</div>
+                                  <div className="font-medium mb-2">
+                                    {ticket.subject}
+                                  </div>
+                                  <div className="text-sm text-gray-700">
+                                    {ticket.message}
+                                  </div>
                                 </div>
                                 <div>
-                                  <Label htmlFor="response">Phản hồi của bạn</Label>
+                                  <Label htmlFor="response">
+                                    Phản hồi của bạn
+                                  </Label>
                                   <Textarea
                                     id="response"
                                     value={response}
-                                    onChange={(e) => setResponse(e.target.value)}
+                                    onChange={(e) =>
+                                      setResponse(e.target.value)
+                                    }
                                     placeholder="Nhập phản hồi cho khách hàng..."
                                     rows={5}
                                   />
                                 </div>
                               </div>
                               <DialogFooter>
-                                <Button variant="outline" onClick={() => setSelectedTicket(null)}>
+                                <Button
+                                  variant="outline"
+                                  onClick={() => setSelectedTicket(null)}
+                                >
                                   Hủy
                                 </Button>
                                 <Button onClick={handleRespondToTicket}>
@@ -546,13 +664,14 @@ export default function EditorDashboard() {
       </Tabs>
 
       {/* Edit Post Dialog */}
-      <Dialog open={!!selectedPost} onOpenChange={(open) => !open && setSelectedPost(null)}>
+      <Dialog
+        open={!!selectedPost}
+        onOpenChange={(open) => !open && setSelectedPost(null)}
+      >
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa bài viết</DialogTitle>
-            <DialogDescription>
-              Cập nhật thông tin bài viết
-            </DialogDescription>
+            <DialogDescription>Cập nhật thông tin bài viết</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
@@ -560,7 +679,9 @@ export default function EditorDashboard() {
               <Input
                 id="edit-title"
                 value={postForm.title}
-                onChange={(e) => setPostForm({ ...postForm, title: e.target.value })}
+                onChange={(e) =>
+                  setPostForm({ ...postForm, title: e.target.value })
+                }
               />
             </div>
             <div>
@@ -568,7 +689,9 @@ export default function EditorDashboard() {
               <Textarea
                 id="edit-excerpt"
                 value={postForm.excerpt}
-                onChange={(e) => setPostForm({ ...postForm, excerpt: e.target.value })}
+                onChange={(e) =>
+                  setPostForm({ ...postForm, excerpt: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -577,7 +700,9 @@ export default function EditorDashboard() {
               <Textarea
                 id="edit-content"
                 value={postForm.content}
-                onChange={(e) => setPostForm({ ...postForm, content: e.target.value })}
+                onChange={(e) =>
+                  setPostForm({ ...postForm, content: e.target.value })
+                }
                 rows={10}
               />
             </div>
@@ -586,9 +711,7 @@ export default function EditorDashboard() {
             <Button variant="outline" onClick={() => setSelectedPost(null)}>
               Hủy
             </Button>
-            <Button onClick={handleUpdatePost}>
-              Cập nhật
-            </Button>
+            <Button onClick={handleUpdatePost}>Cập nhật</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
