@@ -30,8 +30,10 @@ const App = () => (
           <div className="pt-16 pb-20 md:pb-0">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/feed" element={<Feed />} />
               <Route path="/news" element={<News />} />
               <Route path="/run" element={<Run />} />
+              <Route path="/events" element={<Events />} />
               <Route path="/store" element={<Store />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/notifications" element={<Notifications />} />
