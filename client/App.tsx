@@ -15,6 +15,8 @@ import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import Events from "./pages/Events";
 import Feed from "./pages/Feed";
+import Analytics from "./pages/Analytics";
+import Segments from "./pages/Segments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
