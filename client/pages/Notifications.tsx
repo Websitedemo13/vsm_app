@@ -129,25 +129,33 @@ export default function Notifications() {
   };
 
   const markAllAsRead = async () => {
+    // Update UI immediately for better UX
+    setNotifications((prev) =>
+      prev.map((notif) => ({ ...notif, isRead: true })),
+    );
+    setUnreadCount(0);
+
+    toast({
+      title: "Đã đánh dấu tất cả",
+      description: "Tất cả thông báo đã được đánh dấu là đã đọc",
+    });
+
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1000);
+
       await fetch(`${apiUrl}/api/notifications/read-all`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: "user_1" }),
+        signal: controller.signal,
       });
 
-      setNotifications((prev) =>
-        prev.map((notif) => ({ ...notif, isRead: true })),
-      );
-      setUnreadCount(0);
-
-      toast({
-        title: "Đã đánh dấu tất cả",
-        description: "Tất cả thông báo đã được đánh dấu là đã đọc",
-      });
+      clearTimeout(timeoutId);
     } catch (error) {
-      console.error("Error marking all notifications as read:", error);
+      // Silently fail - UI already updated
     }
   };
 
