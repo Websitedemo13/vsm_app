@@ -283,13 +283,18 @@ export default function Run() {
     if (!sessionId) return;
 
     try {
-      const response = await fetch("/api/run/end", {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await fetch(`${apiUrl}/api/run/end`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId }),
       });
 
-      const data = await response.json();
+      // Continue with session cleanup regardless of API response
+      let data = {};
+      if (response.ok) {
+        data = await response.json();
+      }
 
       // Stop GPS tracking
       if (watchId.current !== null) {
