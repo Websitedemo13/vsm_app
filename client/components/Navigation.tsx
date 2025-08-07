@@ -81,16 +81,15 @@ export default function Navigation() {
               {/* Notifications */}
               <Link
                 to="/notifications"
-                className={`relative flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
+                className={`relative p-2 rounded-lg transition-colors ${
                   isActive("/notifications")
                     ? "text-vsm-orange bg-vsm-orange/10"
                     : "text-vsm-black hover:text-vsm-orange hover:bg-vsm-orange/5"
                 }`}
               >
                 <Bell className="w-5 h-5" />
-                <span>Thông báo</span>
                 {notificationCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs h-5 w-5 flex items-center justify-center p-0 rounded-full">
+                  <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs h-4 w-4 flex items-center justify-center p-0 rounded-full">
                     {notificationCount > 9 ? '9+' : notificationCount}
                   </Badge>
                 )}
