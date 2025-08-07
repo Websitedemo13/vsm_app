@@ -104,9 +104,46 @@ export default function Navigation() {
               </Link>
             </div>
             
-            <Button className="bg-vsm-orange hover:bg-vsm-orange-dark text-white px-6">
-              Đăng ký ngay
-            </Button>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                {user?.isPremium && (
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white">
+                    <Crown className="w-3 h-3 mr-1" />
+                    Premium
+                  </Badge>
+                )}
+                <div className="flex items-center space-x-2">
+                  <Avatar className="w-8 h-8">
+                    <AvatarFallback className="bg-vsm-orange text-white text-sm">
+                      {user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={logout}
+                  className="text-red-600 hover:text-red-700"
+                >
+                  <LogOut className="w-4 h-4 mr-1" />
+                  Đăng xuất
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link to="/login">
+                  <Button variant="outline" className="px-6">
+                    Đăng nhập
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button className="bg-vsm-orange hover:bg-vsm-orange-dark text-white px-6">
+                    Đăng ký ngay
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>
