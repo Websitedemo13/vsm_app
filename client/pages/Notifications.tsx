@@ -73,20 +73,28 @@ export default function Notifications() {
     try {
       // Use proper API URL or mock data if backend not available
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-      const response = await fetch(`${apiUrl}/api/notifications/user_1`);
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+      const response = await fetch(`${apiUrl}/api/notifications/user_1`, {
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
-        // Use mock data if backend not available
-        setNotifications(getMockNotifications());
-        setUnreadCount(3);
-        return;
+        throw new Error('Backend response not ok');
       }
 
       const data = await response.json();
       setNotifications(data.notifications);
       setUnreadCount(data.unreadCount);
     } catch (error) {
-      // Use mock data on error
+      // Use mock data on any error
       setNotifications(getMockNotifications());
       setUnreadCount(3);
     }
