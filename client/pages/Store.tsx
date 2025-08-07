@@ -223,6 +223,117 @@ export default function Store() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        {/* Voucher Panel */}
+        {showVouchers && (
+          <Card className="mb-6 border-green-200 bg-green-50">
+            <CardHeader>
+              <CardTitle className="flex items-center text-green-800">
+                <Gift className="w-5 h-5 mr-2" />
+                Voucher khả dụng
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {availableVouchers.length > 0 ? (
+                <div className="grid md:grid-cols-2 gap-4">
+                  {availableVouchers.map((voucher) => (
+                    <Card key={voucher.id} className="border-2 border-dashed border-green-300 bg-white">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-semibold text-green-800">{voucher.title}</h3>
+                          <Badge className="bg-green-100 text-green-700">
+                            {voucher.discountType === "percentage"
+                              ? `${voucher.discountValue}%`
+                              : `${voucher.discountValue.toLocaleString()}đ`
+                            }
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-3">
+                          Mã: <strong>{voucher.code}</strong>
+                        </p>
+                        {voucher.minimumAmount && (
+                          <p className="text-xs text-gray-500 mb-3">
+                            Đơn hàng tối thiểu: {voucher.minimumAmount.toLocaleString()}đ
+                          </p>
+                        )}
+                        <Button
+                          size="sm"
+                          onClick={() => applyVoucher(voucher)}
+                          disabled={selectedVoucher?.id === voucher.id}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white"
+                        >
+                          {selectedVoucher?.id === voucher.id ? (
+                            <>
+                              <CheckCircle className="w-4 h-4 mr-1" />
+                              Đã áp dụng
+                            </>
+                          ) : (
+                            <>
+                              <Tag className="w-4 h-4 mr-1" />
+                              Áp dụng
+                            </>
+                          )}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Ticket className="w-12 h-12 text-green-300 mx-auto mb-4" />
+                  <p className="text-green-600">Bạn chưa có voucher nào</p>
+                  <p className="text-sm text-green-500 mt-2">
+                    Nâng cấp Premium để nhận voucher độc quyền!
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Cart Summary */}
+        {cartCount > 0 && (
+          <Card className="mb-6 border-vsm-orange bg-orange-50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-vsm-black">
+                    Giỏ hàng ({cartCount} sản phẩm)
+                  </h3>
+                  {selectedVoucher && (
+                    <div className="flex items-center mt-2">
+                      <Ticket className="w-4 h-4 text-green-600 mr-1" />
+                      <span className="text-sm text-green-600">
+                        Voucher: {selectedVoucher.code}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={removeVoucher}
+                        className="ml-2 h-auto p-1 text-red-500 hover:text-red-700"
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-gray-600">
+                    Tạm tính: {cartTotal.toLocaleString()}đ
+                  </div>
+                  {selectedVoucher && (
+                    <div className="text-sm text-green-600">
+                      Giảm giá: -{calculateDiscount().toLocaleString()}đ
+                    </div>
+                  )}
+                  <div className="text-xl font-bold text-vsm-orange">
+                    Tổng cộng: {finalTotal.toLocaleString()}đ
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         {/* Search and Filter */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="flex-1 relative">
@@ -379,7 +490,7 @@ export default function Store() {
                         </span>
                         {product.originalPrice && (
                           <span className="text-sm text-gray-500 line-through">
-                            {product.originalPrice}đ
+                            {product.originalPrice}��
                           </span>
                         )}
                       </div>
