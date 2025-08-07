@@ -66,31 +66,8 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-vsm-orange rounded-lg flex items-center justify-center">
-                <Play className="w-5 h-5 text-white fill-current" />
-              </div>
-              <span className="text-xl font-bold text-vsm-black">VSM</span>
-            </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-vsm-black hover:text-vsm-orange transition-colors">Trang chủ</a>
-              <a href="#" className="text-vsm-black hover:text-vsm-orange transition-colors">Tin tức</a>
-              <a href="#" className="text-vsm-black hover:text-vsm-orange transition-colors">Cửa hàng</a>
-              <a href="#" className="text-vsm-black hover:text-vsm-orange transition-colors">Liên hệ</a>
-            </div>
-            <Button className="bg-vsm-orange hover:bg-vsm-orange-dark text-white px-6">
-              Đăng ký ngay
-            </Button>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
-      <section className="relative pt-16 overflow-hidden">
+      <section className="relative overflow-hidden">
         <div className="absolute inset-0 vsm-gradient"></div>
         <div className="absolute inset-0 bg-black/20"></div>
         
