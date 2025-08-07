@@ -16,6 +16,7 @@ import {
 export default function Navigation() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const navigation = [
     { name: "Trang chủ", href: "/", icon: Home },
@@ -24,6 +25,25 @@ export default function Navigation() {
     { name: "Cửa hàng", href: "/store", icon: ShoppingBag },
     { name: "Cá nhân", href: "/profile", icon: User },
   ];
+
+  useEffect(() => {
+    // Fetch notification count
+    const fetchNotificationCount = async () => {
+      try {
+        const response = await fetch('/api/notifications/user_1');
+        const data = await response.json();
+        setNotificationCount(data.unreadCount || 0);
+      } catch (error) {
+        console.error('Error fetching notification count:', error);
+      }
+    };
+
+    fetchNotificationCount();
+
+    // Poll for updates every 30 seconds
+    const interval = setInterval(fetchNotificationCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const isActive = (path: string) => {
     return location.pathname === path;
