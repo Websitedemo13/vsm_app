@@ -19,9 +19,37 @@ import {
   CheckCircle
 } from "lucide-react";
 
+interface Voucher {
+  id: string;
+  code: string;
+  title: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  minimumAmount?: number;
+}
+
 export default function Store() {
   const [cartCount, setCartCount] = useState(0);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [availableVouchers, setAvailableVouchers] = useState<Voucher[]>([]);
+  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
+  const [showVouchers, setShowVouchers] = useState(false);
+  const [cartTotal, setCartTotal] = useState(0);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchVouchers();
+  }, []);
+
+  const fetchVouchers = async () => {
+    try {
+      const response = await fetch('/api/vouchers/user_1');
+      const data = await response.json();
+      setAvailableVouchers(data.vouchers || []);
+    } catch (error) {
+      console.error('Error fetching vouchers:', error);
+    }
+  };
 
   const categories = ["Tất cả", "Áo thun", "Giày chạy", "Phụ kiện", "Đồ uống", "Thiết bị"];
   
