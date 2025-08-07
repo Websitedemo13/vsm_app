@@ -17,63 +17,163 @@ import {
   UserPlus,
   AlertCircle,
 } from "lucide-react";
+import { supabase, Profile } from '../lib/supabase';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface User {
   id: string;
   name: string;
   email: string;
+  role: 'user' | 'editor' | 'admin';
   isPremium: boolean;
-  premiumExpiry?: number;
-  joinedDate: number;
+  avatar?: string;
+  profile?: Profile;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (userData: User) => void;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  checkAuth: () => boolean;
+  updateUser: (userData: Partial<User>) => void;
+  supabaseUser: SupabaseUser | null;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [supabaseUser, setSupabaseUser] = useState<SupabaseUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing user in localStorage
-    const savedUser = localStorage.getItem("vsm_user");
-    if (savedUser) {
-      try {
-        const userData = JSON.parse(savedUser);
-        setUser(userData);
-      } catch (error) {
-        console.error("Error parsing user data:", error);
-        localStorage.removeItem("vsm_user");
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setSupabaseUser(session.user);
+        loadUserProfile(session.user.id);
+      } else {
+        setLoading(false);
       }
-    }
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setSupabaseUser(session.user);
+        await loadUserProfile(session.user.id);
+      } else {
+        setSupabaseUser(null);
+        setUser(null);
+        setLoading(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("vsm_user", JSON.stringify(userData));
+  const loadUserProfile = async (userId: string) => {
+    try {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) throw error;
+
+      if (profile) {
+        const userData: User = {
+          id: profile.id,
+          email: profile.email,
+          name: profile.full_name,
+          role: profile.role,
+          isPremium: profile.is_premium,
+          avatar: profile.avatar_url,
+          profile,
+        };
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error('Error loading user profile:', error);
+      // Fallback for development - create basic user
+      if (supabaseUser) {
+        const userData: User = {
+          id: supabaseUser.id,
+          email: supabaseUser.email || '',
+          name: supabaseUser.user_metadata?.full_name || 'User',
+          role: 'user',
+          isPremium: false,
+        };
+        setUser(userData);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("vsm_user");
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        setSupabaseUser(data.user);
+        await loadUserProfile(data.user.id);
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('Login failed:', error);
+      return false;
+    }
   };
 
-  const checkAuth = () => {
-    return user !== null;
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setSupabaseUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  const updateUser = async (userData: Partial<User>) => {
+    if (user && user.profile) {
+      try {
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            full_name: userData.name,
+            avatar_url: userData.avatar,
+          })
+          .eq('id', user.id);
+
+        if (error) throw error;
+
+        const updatedUser = { ...user, ...userData };
+        setUser(updatedUser);
+      } catch (error) {
+        console.error('Failed to update user:', error);
+      }
+    }
   };
 
   const value = {
     user,
     isAuthenticated: user !== null,
+    loading,
     login,
     logout,
-    checkAuth,
+    updateUser,
+    supabaseUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -90,15 +190,25 @@ export const useAuth = () => {
 interface AuthGuardProps {
   children: ReactNode;
   requiresPremium?: boolean;
+  requiresRole?: 'editor' | 'admin';
   fallback?: "login" | "preview";
 }
 
 export const AuthGuard = ({
   children,
   requiresPremium = false,
+  requiresRole,
   fallback = "login",
 }: AuthGuardProps) => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600"></div>
+      </div>
+    );
+  }
 
   // Not authenticated at all
   if (!isAuthenticated) {
@@ -108,8 +218,18 @@ export const AuthGuard = ({
     return <LoginRequired />;
   }
 
-  // Authenticated but requires Premium
-  if (requiresPremium && user && !user.isPremium) {
+  // Check role requirements
+  if (requiresRole && user) {
+    if (requiresRole === 'admin' && user.role !== 'admin') {
+      return <RoleRequired requiredRole="admin" />;
+    }
+    if (requiresRole === 'editor' && !['editor', 'admin'].includes(user.role)) {
+      return <RoleRequired requiredRole="editor" />;
+    }
+  }
+
+  // Authenticated but requires Premium (unless admin)
+  if (requiresPremium && user && !user.isPremium && user.role !== 'admin') {
     return <PremiumRequired />;
   }
 
@@ -136,6 +256,7 @@ const PreviewMode = ({ children }: { children: ReactNode }) => {
                 </div>
                 <Button
                   size="sm"
+                  onClick={() => (window.location.href = "/login")}
                   className="bg-vsm-orange hover:bg-vsm-orange-dark text-white"
                 >
                   <LogIn className="w-4 h-4 mr-1" />
@@ -201,6 +322,35 @@ const LoginRequired = () => {
   );
 };
 
+const RoleRequired = ({ requiredRole }: { requiredRole: string }) => {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+      <Card className="max-w-md w-full shadow-xl">
+        <CardHeader className="text-center">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <User className="w-8 h-8 text-blue-600" />
+          </div>
+          <CardTitle className="text-2xl text-gray-800">
+            Quyền truy cập bị hạn chế
+          </CardTitle>
+          <p className="text-gray-600">
+            Chức năng này chỉ dành cho {requiredRole === 'admin' ? 'Admin' : 'Editor/Admin'}
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Button
+            onClick={() => window.history.back()}
+            variant="outline"
+            className="w-full"
+          >
+            Quay lại
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 const PremiumRequired = () => {
   const premiumFeatures = [
     "Giáo án tập luyện chuyên nghiệp",
@@ -212,12 +362,7 @@ const PremiumRequired = () => {
   ];
 
   const handleUpgrade = () => {
-    // Mock premium upgrade
-    const userData = JSON.parse(localStorage.getItem("vsm_user") || "{}");
-    userData.isPremium = true;
-    userData.premiumExpiry = Date.now() + 365 * 24 * 60 * 60 * 1000;
-    localStorage.setItem("vsm_user", JSON.stringify(userData));
-    window.location.reload();
+    window.location.href = "/store?upgrade=premium";
   };
 
   return (
@@ -242,7 +387,7 @@ const PremiumRequired = () => {
               </span>
             </div>
             <div className="text-3xl font-bold text-vsm-orange">299,000đ</div>
-            <div className="text-sm text-gray-600">một lần • trọn đời</div>
+            <div className="text-sm text-gray-600">một năm • không giới hạn</div>
             <Badge className="mt-2 bg-red-100 text-red-700">
               Tiết kiệm 60% so với gói tháng
             </Badge>
@@ -284,7 +429,7 @@ const PremiumRequired = () => {
 
           <div className="text-center text-xs text-gray-500 space-y-1">
             <p>💳 Thanh toán an toàn • 🔄 Hoàn tiền 30 ngày</p>
-            <p>📞 Hỗ trợ 24/7 • 🎯 Trọn đời không phí gia hạn</p>
+            <p>📞 Hỗ trợ 24/7 • 🎯 Tính năng Premium không giới hạn</p>
           </div>
         </CardContent>
       </Card>
