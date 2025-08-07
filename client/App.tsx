@@ -13,6 +13,8 @@ import Run from "./pages/Run";
 import Store from "./pages/Store";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
+import Events from "./pages/Events";
+import Feed from "./pages/Feed";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
