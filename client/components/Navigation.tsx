@@ -23,6 +23,7 @@ export default function Navigation() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
+  const { user, isAuthenticated, logout } = useAuth();
 
   const navigation = [
     { name: "Trang chủ", href: "/", icon: Home },
