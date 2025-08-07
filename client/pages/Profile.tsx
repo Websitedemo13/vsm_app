@@ -112,11 +112,18 @@ export default function Profile() {
 
   const fetchTrainingPlans = async () => {
     try {
-      const response = await fetch("/api/training-plans/user_1");
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await fetch(`${apiUrl}/api/training-plans/user_1`);
+
+      if (!response.ok) {
+        setTrainingPlans([]);
+        return;
+      }
+
       const data = await response.json();
-      setTrainingPlans(data.plans);
+      setTrainingPlans(data.plans || []);
     } catch (error) {
-      console.error("Error fetching training plans:", error);
+      setTrainingPlans([]);
     }
   };
 
@@ -164,7 +171,7 @@ export default function Profile() {
     } catch (error) {
       toast({
         title: "Lỗi upgrade",
-        description: "Không thể nâng cấp tài khoản. Vui l��ng thử lại.",
+        description: "Không thể nâng cấp tài khoản. Vui lòng thử lại.",
         variant: "destructive",
       });
     } finally {
