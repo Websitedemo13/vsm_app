@@ -129,21 +129,35 @@ export default function Profile() {
 
   const fetchVouchers = async () => {
     try {
-      const response = await fetch("/api/vouchers/user_1");
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await fetch(`${apiUrl}/api/vouchers/user_1`);
+
+      if (!response.ok) {
+        setVouchers([]);
+        return;
+      }
+
       const data = await response.json();
-      setVouchers(data.vouchers);
+      setVouchers(data.vouchers || []);
     } catch (error) {
-      console.error("Error fetching vouchers:", error);
+      setVouchers([]);
     }
   };
 
   const fetchRunHistory = async () => {
     try {
-      const response = await fetch("/api/run/history/user_1");
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await fetch(`${apiUrl}/api/run/history/user_1`);
+
+      if (!response.ok) {
+        setRunHistory([]);
+        return;
+      }
+
       const data = await response.json();
       setRunHistory(data.sessions || []);
     } catch (error) {
-      console.error("Error fetching run history:", error);
+      setRunHistory([]);
     }
   };
 
