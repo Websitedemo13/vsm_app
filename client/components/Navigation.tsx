@@ -10,7 +10,9 @@ import {
   User,
   Menu,
   X,
-  Bell
+  Bell,
+  Calendar,
+  TrendingUp
 } from "lucide-react";
 
 export default function Navigation() {
