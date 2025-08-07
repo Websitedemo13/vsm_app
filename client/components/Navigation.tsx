@@ -37,6 +37,12 @@ export default function Navigation() {
   useEffect(() => {
     // Fetch notification count
     const fetchNotificationCount = async () => {
+      // Check if we should use mock API only
+      if (import.meta.env.VITE_MOCK_API === 'true') {
+        setNotificationCount(3);
+        return;
+      }
+
       try {
         // Use proper API URL or mock data if backend not available
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
