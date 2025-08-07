@@ -440,8 +440,8 @@ export default function Store() {
                       </div>
                     </div>
                     
-                    <Button 
-                      onClick={() => addToCart(product.id)}
+                    <Button
+                      onClick={() => addToCart(product.id, product.priceNumber)}
                       className="w-full bg-vsm-orange hover:bg-vsm-orange-dark text-white"
                     >
                       <ShoppingCart className="w-4 h-4 mr-2" />
@@ -490,7 +490,7 @@ export default function Store() {
                         </span>
                         {product.originalPrice && (
                           <span className="text-sm text-gray-500 line-through">
-                            {product.originalPrice}��
+                            {product.originalPrice}đ
                           </span>
                         )}
                       </div>
