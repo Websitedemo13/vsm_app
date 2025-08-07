@@ -193,15 +193,31 @@ export default function Store() {
               <h1 className="text-3xl font-bold text-vsm-black">Cửa hàng VSM</h1>
               <p className="text-vsm-gray-medium">Sản phẩm chạy bộ chính hãng cho sinh viên</p>
             </div>
-            <Button className="relative bg-vsm-orange hover:bg-vsm-orange-dark text-white">
-              <ShoppingCart className="w-5 h-5 mr-2" />
-              Giỏ hàng
-              {cartCount > 0 && (
-                <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                  {cartCount}
-                </Badge>
-              )}
-            </Button>
+            <div className="flex items-center space-x-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowVouchers(!showVouchers)}
+                className="relative"
+              >
+                <Ticket className="w-5 h-5 mr-2" />
+                Voucher
+                {availableVouchers.length > 0 && (
+                  <Badge className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                    {availableVouchers.length}
+                  </Badge>
+                )}
+              </Button>
+
+              <Button className="relative bg-vsm-orange hover:bg-vsm-orange-dark text-white">
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Giỏ hàng
+                {cartCount > 0 && (
+                  <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                    {cartCount}
+                  </Badge>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
