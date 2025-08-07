@@ -494,8 +494,8 @@ export default function Store() {
                           </span>
                         )}
                       </div>
-                      <Button 
-                        onClick={() => addToCart(product.id)}
+                      <Button
+                        onClick={() => addToCart(product.id, product.priceNumber)}
                         className="bg-vsm-orange hover:bg-vsm-orange-dark text-white"
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
