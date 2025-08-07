@@ -20,8 +20,9 @@ export default function Navigation() {
 
   const navigation = [
     { name: "Trang chủ", href: "/", icon: Home },
-    { name: "Tin tức", href: "/news", icon: Newspaper },
+    { name: "Feed", href: "/feed", icon: TrendingUp },
     { name: "Chạy bộ", href: "/run", icon: Play, highlighted: true },
+    { name: "Sự kiện", href: "/events", icon: Calendar },
     { name: "Cửa hàng", href: "/store", icon: ShoppingBag },
     { name: "Cá nhân", href: "/profile", icon: User },
   ];
