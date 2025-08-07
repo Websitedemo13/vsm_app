@@ -1,15 +1,21 @@
-import { ReactNode, createContext, useContext, useState, useEffect } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Lock, 
-  User, 
-  LogIn, 
+import {
+  Lock,
+  User,
+  LogIn,
   Crown,
   Eye,
   UserPlus,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 
 interface User {
@@ -36,26 +42,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Check for existing user in localStorage
-    const savedUser = localStorage.getItem('vsm_user');
+    const savedUser = localStorage.getItem("vsm_user");
     if (savedUser) {
       try {
         const userData = JSON.parse(savedUser);
         setUser(userData);
       } catch (error) {
-        console.error('Error parsing user data:', error);
-        localStorage.removeItem('vsm_user');
+        console.error("Error parsing user data:", error);
+        localStorage.removeItem("vsm_user");
       }
     }
   }, []);
 
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('vsm_user', JSON.stringify(userData));
+    localStorage.setItem("vsm_user", JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('vsm_user');
+    localStorage.removeItem("vsm_user");
   };
 
   const checkAuth = () => {
@@ -67,20 +73,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isAuthenticated: user !== null,
     login,
     logout,
-    checkAuth
+    checkAuth,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -91,7 +93,11 @@ interface AuthGuardProps {
   fallback?: "login" | "preview";
 }
 
-export const AuthGuard = ({ children, requiresPremium = false, fallback = "login" }: AuthGuardProps) => {
+export const AuthGuard = ({
+  children,
+  requiresPremium = false,
+  fallback = "login",
+}: AuthGuardProps) => {
   const { user, isAuthenticated } = useAuth();
 
   // Not authenticated at all
@@ -124,9 +130,14 @@ const PreviewMode = ({ children }: { children: ReactNode }) => {
                 <Eye className="w-5 h-5 text-yellow-600" />
                 <div>
                   <p className="font-medium text-yellow-800">Chế độ xem thử</p>
-                  <p className="text-sm text-yellow-700">Đăng nhập để sử dụng đầy đủ tính năng</p>
+                  <p className="text-sm text-yellow-700">
+                    Đăng nhập để sử dụng đầy đủ tính năng
+                  </p>
                 </div>
-                <Button size="sm" className="bg-vsm-orange hover:bg-vsm-orange-dark text-white">
+                <Button
+                  size="sm"
+                  className="bg-vsm-orange hover:bg-vsm-orange-dark text-white"
+                >
                   <LogIn className="w-4 h-4 mr-1" />
                   Đăng nhập
                 </Button>
@@ -148,23 +159,25 @@ const LoginRequired = () => {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Lock className="w-8 h-8 text-red-600" />
           </div>
-          <CardTitle className="text-2xl text-gray-800">Cần đăng nhập</CardTitle>
+          <CardTitle className="text-2xl text-gray-800">
+            Cần đăng nhập
+          </CardTitle>
           <p className="text-gray-600">
             Bạn cần đăng nhập để truy cập tính năng này
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button 
-            onClick={() => window.location.href = '/login'}
+          <Button
+            onClick={() => (window.location.href = "/login")}
             className="w-full bg-vsm-orange hover:bg-vsm-orange-dark text-white h-12"
           >
             <LogIn className="w-5 h-5 mr-2" />
             Đăng nhập ngay
           </Button>
-          
-          <Button 
-            onClick={() => window.location.href = '/register'}
-            variant="outline" 
+
+          <Button
+            onClick={() => (window.location.href = "/register")}
+            variant="outline"
             className="w-full h-12"
           >
             <UserPlus className="w-5 h-5 mr-2" />
@@ -174,7 +187,7 @@ const LoginRequired = () => {
           <div className="text-center pt-4 border-t">
             <p className="text-sm text-gray-500">
               Hoặc{" "}
-              <button 
+              <button
                 onClick={() => window.history.back()}
                 className="text-vsm-orange hover:underline"
               >
@@ -191,19 +204,19 @@ const LoginRequired = () => {
 const PremiumRequired = () => {
   const premiumFeatures = [
     "Giáo án tập luyện chuyên nghiệp",
-    "Phân tích dữ liệu nâng cao", 
+    "Phân tích dữ liệu nâng cao",
     "Thử thách và segments độc quyền",
     "Voucher cửa hàng đặc biệt",
     "Hỗ trợ ưu tiên 24/7",
-    "Badge Premium trong cộng đồng"
+    "Badge Premium trong cộng đồng",
   ];
 
   const handleUpgrade = () => {
     // Mock premium upgrade
-    const userData = JSON.parse(localStorage.getItem('vsm_user') || '{}');
+    const userData = JSON.parse(localStorage.getItem("vsm_user") || "{}");
     userData.isPremium = true;
-    userData.premiumExpiry = Date.now() + (365 * 24 * 60 * 60 * 1000);
-    localStorage.setItem('vsm_user', JSON.stringify(userData));
+    userData.premiumExpiry = Date.now() + 365 * 24 * 60 * 60 * 1000;
+    localStorage.setItem("vsm_user", JSON.stringify(userData));
     window.location.reload();
   };
 
@@ -217,12 +230,16 @@ const PremiumRequired = () => {
           <CardTitle className="text-3xl bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
             Cần Premium
           </CardTitle>
-          <p className="text-gray-600 text-lg">Tính năng này chỉ dành cho thành viên Premium</p>
-          
+          <p className="text-gray-600 text-lg">
+            Tính năng này chỉ dành cho thành viên Premium
+          </p>
+
           <div className="mt-6 p-4 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl border border-yellow-200">
             <div className="flex items-center justify-center space-x-2 mb-2">
               <AlertCircle className="w-5 h-5 text-yellow-600" />
-              <span className="font-semibold text-yellow-800">Ưu đãi đặc biệt!</span>
+              <span className="font-semibold text-yellow-800">
+                Ưu đãi đặc biệt!
+              </span>
             </div>
             <div className="text-3xl font-bold text-vsm-orange">299,000đ</div>
             <div className="text-sm text-gray-600">một lần • trọn đời</div>
@@ -231,10 +248,12 @@ const PremiumRequired = () => {
             </Badge>
           </div>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <h3 className="font-semibold text-gray-800 mb-3">✨ Bạn sẽ được:</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">
+              ✨ Bạn sẽ được:
+            </h3>
             {premiumFeatures.map((feature, index) => (
               <div key={index} className="flex items-center space-x-3">
                 <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -253,7 +272,7 @@ const PremiumRequired = () => {
               <Crown className="w-5 h-5 mr-2" />
               Nâng cấp Premium - 299,000đ
             </Button>
-            
+
             <Button
               onClick={() => window.history.back()}
               variant="outline"

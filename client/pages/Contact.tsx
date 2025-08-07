@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
   MessageCircle,
   Send,
   CheckCircle,
@@ -17,7 +17,7 @@ import {
   Facebook,
   Instagram,
   Youtube,
-  Twitter
+  Twitter,
 } from "lucide-react";
 
 export default function Contact() {
@@ -27,16 +27,20 @@ export default function Contact() {
     phone: "",
     subject: "",
     message: "",
-    priority: "normal"
+    priority: "normal",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -46,11 +50,11 @@ export default function Contact() {
 
     try {
       // Mock form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       toast({
         title: "Gửi thành công! 📧",
-        description: "Chúng tôi sẽ phản hồi bạn trong vòng 24 giờ."
+        description: "Chúng tôi sẽ phản hồi bạn trong vòng 24 giờ.",
       });
 
       // Reset form
@@ -60,13 +64,13 @@ export default function Contact() {
         phone: "",
         subject: "",
         message: "",
-        priority: "normal"
+        priority: "normal",
       });
     } catch (error) {
       toast({
         title: "Lỗi gửi tin nhắn",
         description: "Vui lòng thử lại sau",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
@@ -81,7 +85,7 @@ export default function Contact() {
       value: "Luôn online",
       action: "Bắt đầu chat",
       color: "bg-green-100 text-green-700",
-      available: true
+      available: true,
     },
     {
       icon: Phone,
@@ -90,7 +94,7 @@ export default function Contact() {
       value: "1900 VSM (876)",
       action: "Gọi ngay",
       color: "bg-blue-100 text-blue-700",
-      available: true
+      available: true,
     },
     {
       icon: Mail,
@@ -99,7 +103,7 @@ export default function Contact() {
       value: "support@vsm.vn",
       action: "Gửi email",
       color: "bg-purple-100 text-purple-700",
-      available: true
+      available: true,
     },
     {
       icon: MapPin,
@@ -108,8 +112,8 @@ export default function Contact() {
       value: "Hà Nội & TP.HCM",
       action: "Xem địa chỉ",
       color: "bg-orange-100 text-orange-700",
-      available: true
-    }
+      available: true,
+    },
   ];
 
   const offices = [
@@ -118,29 +122,29 @@ export default function Contact() {
       address: "Tầng 12, Tòa nhà Lotte Center, 54 Liễu Giai, Ba Đình, Hà Nội",
       phone: "(024) 3962 0xxx",
       email: "hanoi@vsm.vn",
-      hours: "T2-T6: 8:00-18:00, T7: 8:00-12:00"
+      hours: "T2-T6: 8:00-18:00, T7: 8:00-12:00",
     },
     {
       city: "TP. Hồ Chí Minh",
       address: "Tầng 8, Tòa nhà Bitexco, 2 Hải Triều, Quận 1, TP.HCM",
       phone: "(028) 3914 0xxx",
       email: "hcm@vsm.vn",
-      hours: "T2-T6: 8:00-18:00, T7: 8:00-12:00"
-    }
+      hours: "T2-T6: 8:00-18:00, T7: 8:00-12:00",
+    },
   ];
 
   const socialLinks = [
     { icon: Facebook, name: "Facebook", url: "#", followers: "125K" },
     { icon: Instagram, name: "Instagram", url: "#", followers: "89K" },
     { icon: Youtube, name: "YouTube", url: "#", followers: "67K" },
-    { icon: Twitter, name: "Twitter", url: "#", followers: "45K" }
+    { icon: Twitter, name: "Twitter", url: "#", followers: "45K" },
   ];
 
   const supportStats = [
     { label: "Phản hồi trung bình", value: "< 2 phút", icon: Clock },
     { label: "Độ hài lòng", value: "99.2%", icon: CheckCircle },
     { label: "Hỗ trợ 24/7", value: "365 ngày", icon: Headphones },
-    { label: "Ngôn ngữ", value: "Tiếng Việt", icon: Globe }
+    { label: "Ngôn ngữ", value: "Tiếng Việt", icon: Globe },
   ];
 
   return (
@@ -154,9 +158,10 @@ export default function Contact() {
               Liên hệ với chúng tôi
             </h1>
             <p className="text-xl opacity-90 mb-8">
-              Đội ngũ VSM luôn sẵn sàng hỗ trợ bạn. Hãy liên hệ qua bất kỳ kênh nào bạn muốn!
+              Đội ngũ VSM luôn sẵn sàng hỗ trợ bạn. Hãy liên hệ qua bất kỳ kênh
+              nào bạn muốn!
             </p>
-            
+
             {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {supportStats.map((stat, index) => {
@@ -180,14 +185,25 @@ export default function Contact() {
           {contactMethods.map((method, index) => {
             const IconComponent = method.icon;
             return (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="text-center hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="p-6">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 ${method.color}`}>
+                  <div
+                    className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 ${method.color}`}
+                  >
                     <IconComponent className="w-6 h-6" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">{method.title}</h3>
-                  <p className="text-sm text-gray-600 mb-2">{method.description}</p>
-                  <p className="font-medium text-vsm-orange mb-4">{method.value}</p>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    {method.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {method.description}
+                  </p>
+                  <p className="font-medium text-vsm-orange mb-4">
+                    {method.value}
+                  </p>
                   <Button className="w-full bg-vsm-orange hover:bg-vsm-orange-dark text-white">
                     {method.action}
                   </Button>
@@ -206,7 +222,8 @@ export default function Contact() {
                 Gửi tin nhắn
               </CardTitle>
               <p className="text-gray-600">
-                Điền thông tin dưới đây và chúng tôi sẽ phản hồi trong vòng 24 giờ
+                Điền thông tin dưới đây và chúng tôi sẽ phản hồi trong vòng 24
+                giờ
               </p>
             </CardHeader>
             <CardContent>
@@ -226,7 +243,7 @@ export default function Contact() {
                       className="h-12"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
                       Email *
@@ -257,7 +274,7 @@ export default function Contact() {
                       className="h-12"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
                       Mức độ ưu tiên
@@ -338,7 +355,10 @@ export default function Contact() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {offices.map((office, index) => (
-                  <div key={index} className="border-l-4 border-vsm-orange pl-6">
+                  <div
+                    key={index}
+                    className="border-l-4 border-vsm-orange pl-6"
+                  >
                     <h3 className="font-semibold text-lg text-vsm-black mb-2">
                       VSM {office.city}
                     </h3>
@@ -376,7 +396,7 @@ export default function Contact() {
                 <p className="text-gray-600 mb-6">
                   Theo dõi VSM trên các mạng xã hội để cập nhật tin tức mới nhất
                 </p>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   {socialLinks.map((social, index) => {
                     const IconComponent = social.icon;
@@ -388,8 +408,12 @@ export default function Contact() {
                       >
                         <IconComponent className="w-6 h-6 text-vsm-orange" />
                         <div>
-                          <div className="font-medium text-gray-800">{social.name}</div>
-                          <div className="text-sm text-gray-500">{social.followers} followers</div>
+                          <div className="font-medium text-gray-800">
+                            {social.name}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {social.followers} followers
+                          </div>
                         </div>
                       </a>
                     );
@@ -408,7 +432,8 @@ export default function Contact() {
                 Có thể bạn đang tìm kiếm?
               </h3>
               <p className="text-gray-600 mb-6">
-                Nhiều câu hỏi đã được trả lời trong trung tâm trợ giúp của chúng tôi
+                Nhiều câu hỏi đã được trả lời trong trung tâm trợ giúp của chúng
+                tôi
               </p>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8">
                 Xem câu hỏi thường gặp

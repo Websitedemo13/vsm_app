@@ -28,7 +28,7 @@ const activePositions: Map<string, GPSPosition[]> = new Map();
 
 export const startRunSession: RequestHandler = (req, res) => {
   const { userId } = req.body;
-  
+
   if (!userId) {
     return res.status(400).json({ error: "User ID is required" });
   }
@@ -43,23 +43,26 @@ export const startRunSession: RequestHandler = (req, res) => {
     duration: 0,
     averagePace: "0:00",
     calories: 0,
-    isActive: true
+    isActive: true,
   };
 
   runSessions.set(sessionId, newSession);
   activePositions.set(sessionId, []);
 
-  res.json({ 
+  res.json({
     sessionId,
-    message: "Run session started successfully" 
+    message: "Run session started successfully",
   });
 };
 
 export const updatePosition: RequestHandler = (req, res) => {
-  const { sessionId, latitude, longitude, accuracy, altitude, speed } = req.body;
-  
+  const { sessionId, latitude, longitude, accuracy, altitude, speed } =
+    req.body;
+
   if (!sessionId || latitude === undefined || longitude === undefined) {
-    return res.status(400).json({ error: "Session ID, latitude, and longitude are required" });
+    return res
+      .status(400)
+      .json({ error: "Session ID, latitude, and longitude are required" });
   }
 
   const session = runSessions.get(sessionId);
@@ -73,7 +76,7 @@ export const updatePosition: RequestHandler = (req, res) => {
     timestamp: Date.now(),
     accuracy,
     altitude,
-    speed
+    speed,
   };
 
   const positions = activePositions.get(sessionId) || [];
@@ -86,7 +89,12 @@ export const updatePosition: RequestHandler = (req, res) => {
     for (let i = 1; i < positions.length; i++) {
       const prev = positions[i - 1];
       const curr = positions[i];
-      totalDistance += calculateDistance(prev.latitude, prev.longitude, curr.latitude, curr.longitude);
+      totalDistance += calculateDistance(
+        prev.latitude,
+        prev.longitude,
+        curr.latitude,
+        curr.longitude,
+      );
     }
   }
 
@@ -97,18 +105,18 @@ export const updatePosition: RequestHandler = (req, res) => {
   session.averagePace = calculatePace(totalDistance, session.duration);
   session.calories = Math.round(totalDistance * 65); // Rough estimate: 65 calories per km
 
-  res.json({ 
+  res.json({
     distance: totalDistance.toFixed(2),
     duration: formatDuration(session.duration),
     pace: session.averagePace,
     calories: session.calories,
-    currentPosition: position
+    currentPosition: position,
   });
 };
 
 export const endRunSession: RequestHandler = (req, res) => {
   const { sessionId } = req.body;
-  
+
   if (!sessionId) {
     return res.status(400).json({ error: "Session ID is required" });
   }
@@ -133,24 +141,24 @@ export const endRunSession: RequestHandler = (req, res) => {
       pace: session.averagePace,
       calories: session.calories,
       startTime: new Date(session.startTime).toISOString(),
-      endTime: new Date(session.endTime!).toISOString()
+      endTime: new Date(session.endTime!).toISOString(),
     },
-    message: "Run session completed successfully"
+    message: "Run session completed successfully",
   });
 };
 
 export const getRunHistory: RequestHandler = (req, res) => {
   const { userId } = req.params;
-  
+
   if (!userId) {
     return res.status(400).json({ error: "User ID is required" });
   }
 
   const userSessions = Array.from(runSessions.values())
-    .filter(session => session.userId === userId && !session.isActive)
+    .filter((session) => session.userId === userId && !session.isActive)
     .sort((a, b) => (b.endTime || 0) - (a.endTime || 0))
     .slice(0, 20) // Return last 20 sessions
-    .map(session => ({
+    .map((session) => ({
       id: session.id,
       distance: session.distance.toFixed(2),
       duration: formatDuration(session.duration),
@@ -158,20 +166,28 @@ export const getRunHistory: RequestHandler = (req, res) => {
       calories: session.calories,
       date: new Date(session.endTime || session.startTime).toISOString(),
       startTime: new Date(session.startTime).toISOString(),
-      endTime: session.endTime ? new Date(session.endTime).toISOString() : null
+      endTime: session.endTime ? new Date(session.endTime).toISOString() : null,
     }));
 
   res.json({ sessions: userSessions });
 };
 
 // Helper functions
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+function calculateDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+): number {
   const R = 6371; // Earth's radius in kilometers
   const dLat = toRadians(lat2 - lat1);
   const dLon = toRadians(lon2 - lon1);
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
@@ -182,10 +198,10 @@ function toRadians(degrees: number): number {
 
 function calculatePace(distance: number, duration: number): string {
   if (distance === 0) return "0:00";
-  const paceInSeconds = (duration / 1000) / distance;
+  const paceInSeconds = duration / 1000 / distance;
   const minutes = Math.floor(paceInSeconds / 60);
   const seconds = Math.floor(paceInSeconds % 60);
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
 function formatDuration(milliseconds: number): string {
@@ -193,9 +209,9 @@ function formatDuration(milliseconds: number): string {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  
+
   if (hours > 0) {
-    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }

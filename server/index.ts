@@ -6,7 +6,7 @@ import {
   startRunSession,
   updatePosition,
   endRunSession,
-  getRunHistory
+  getRunHistory,
 } from "./routes/gps";
 import {
   getUserProfile,
@@ -15,7 +15,7 @@ import {
   getUserVouchers,
   getUserNotifications,
   markNotificationRead,
-  markAllNotificationsRead
+  markAllNotificationsRead,
 } from "./routes/premium";
 
 export function createServer() {

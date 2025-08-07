@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Smartphone, 
-  Download, 
-  Star, 
+import {
+  Smartphone,
+  Download,
+  Star,
   Play,
   MapPin,
   Users,
@@ -17,7 +17,7 @@ import {
   Monitor,
   Tablet,
   Globe,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
 
 export default function MobileApp() {
@@ -25,39 +25,42 @@ export default function MobileApp() {
     {
       icon: MapPin,
       title: "GPS Tracking chính xác",
-      description: "Theo dõi quãng đường, pace, calories với GPS độ chính xác cao",
-      color: "bg-blue-100 text-blue-600"
+      description:
+        "Theo dõi quãng đường, pace, calories với GPS độ chính xác cao",
+      color: "bg-blue-100 text-blue-600",
     },
     {
       icon: Users,
       title: "Cộng đồng sinh viên",
-      description: "Kết nối với hàng nghìn sinh viên đam mê chạy bộ trên toàn quốc",
-      color: "bg-purple-100 text-purple-600"
+      description:
+        "Kết nối với hàng nghìn sinh viên đam mê chạy bộ trên toàn quốc",
+      color: "bg-purple-100 text-purple-600",
     },
     {
       icon: Trophy,
       title: "Sự kiện & Thử thách",
       description: "Tham gia marathon, fun run và các thử thách hấp dẫn",
-      color: "bg-yellow-100 text-yellow-600"
+      color: "bg-yellow-100 text-yellow-600",
     },
     {
       icon: Camera,
       title: "Chia sẻ hoạt động",
       description: "Đăng ảnh, video và chia sẻ thành tích với cộng đồng",
-      color: "bg-green-100 text-green-600"
+      color: "bg-green-100 text-green-600",
     },
     {
       icon: Heart,
       title: "Theo dõi sức khỏe",
-      description: "Giám sát nhịp tim, calories và các chỉ số sức khỏe quan trọng",
-      color: "bg-red-100 text-red-600"
+      description:
+        "Giám sát nhịp tim, calories và các chỉ số sức khỏe quan trọng",
+      color: "bg-red-100 text-red-600",
     },
     {
       icon: Zap,
       title: "Phân tích nâng cao",
       description: "Báo cáo chi tiết về hiệu suất và xu hướng cải thiện",
-      color: "bg-orange-100 text-orange-600"
-    }
+      color: "bg-orange-100 text-orange-600",
+    },
   ];
 
   const screenshots = [
@@ -65,7 +68,7 @@ export default function MobileApp() {
     { id: 2, title: "GPS Tracking", description: "Theo dõi chạy bộ real-time" },
     { id: 3, title: "Social Feed", description: "Hoạt động của cộng đồng" },
     { id: 4, title: "Sự kiện", description: "Marathon và fun run" },
-    { id: 5, title: "Profile", description: "Thống kê cá nhân" }
+    { id: 5, title: "Profile", description: "Thống kê cá nhân" },
   ];
 
   const testimonials = [
@@ -73,27 +76,30 @@ export default function MobileApp() {
       name: "Minh Anh Nguyen",
       university: "ĐH Bách Khoa Hà Nội",
       rating: 5,
-      comment: "App tuyệt vời! GPS rất chính xác và cộng đồng rất sôi động. Đã giúp tôi cải thiện pace từ 6:00 xuống 5:20!"
+      comment:
+        "App tuyệt vời! GPS rất chính xác và cộng đồng rất sôi động. Đã giúp tôi cải thiện pace từ 6:00 xuống 5:20!",
     },
     {
       name: "Thu Ha Le",
       university: "ĐH Y Hà Nội",
       rating: 5,
-      comment: "Giao diện đẹp, dễ sử dụng. Tính năng theo dõi sức khỏe rất hữu ích cho việc tập luyện khoa học."
+      comment:
+        "Giao diện đẹp, dễ sử dụng. Tính năng theo dõi sức khỏe rất hữu ích cho việc tập luyện khoa học.",
     },
     {
       name: "Duc Huy Tran",
       university: "ĐH Kinh tế Quốc dân",
       rating: 5,
-      comment: "Kết nối được với nhiều bạn cùng sở thích. Các sự kiện VSM tổ chức rất chuyên nghiệp và ý nghĩa!"
-    }
+      comment:
+        "Kết nối được với nhiều bạn cùng sở thích. Các sự kiện VSM tổ chức rất chuyên nghiệp và ý nghĩa!",
+    },
   ];
 
   const stats = [
     { label: "Tổng tải xuống", value: "150K+", icon: Download },
     { label: "Đánh giá", value: "4.8/5", icon: Star },
     { label: "Người dùng hoạt động", value: "25K+", icon: Users },
-    { label: "Km đã theo dõi", value: "2.5M+", icon: MapPin }
+    { label: "Km đã theo dõi", value: "2.5M+", icon: MapPin },
   ];
 
   return (
@@ -103,7 +109,7 @@ export default function MobileApp() {
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
         <div className="absolute bottom-20 right-20 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -111,18 +117,19 @@ export default function MobileApp() {
                 <Play className="w-4 h-4 mr-1" />
                 Ứng dụng #1 cho sinh viên Việt Nam
               </Badge>
-              
+
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 VSM Mobile
                 <br />
                 <span className="text-white/90">Chạy bộ thông minh</span>
               </h1>
-              
+
               <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                Ứng dụng chạy bộ được thiết kế đặc biệt cho sinh viên Việt Nam. 
-                Theo dõi GPS chính xác, kết nối cộng đồng và tham gia các sự kiện hấp dẫn.
+                Ứng dụng chạy bộ được thiết kế đặc biệt cho sinh viên Việt Nam.
+                Theo dõi GPS chính xác, kết nối cộng đồng và tham gia các sự
+                kiện hấp dẫn.
               </p>
-              
+
               {/* Download Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button className="bg-black hover:bg-gray-800 text-white h-14 px-6 text-lg">
@@ -134,7 +141,7 @@ export default function MobileApp() {
                     </div>
                   </div>
                 </Button>
-                
+
                 <Button className="bg-black hover:bg-gray-800 text-white h-14 px-6 text-lg">
                   <div className="flex items-center space-x-3">
                     <Play className="w-6 h-6" />
@@ -160,7 +167,7 @@ export default function MobileApp() {
                 })}
               </div>
             </div>
-            
+
             <div className="relative">
               {/* Phone Mockup */}
               <div className="relative mx-auto w-80 h-96 bg-black rounded-3xl p-2 shadow-2xl">
@@ -168,11 +175,13 @@ export default function MobileApp() {
                   <div className="text-center text-white">
                     <Smartphone className="w-20 h-20 mx-auto mb-4 opacity-80" />
                     <h3 className="text-lg font-semibold mb-2">VSM App</h3>
-                    <p className="text-sm opacity-80">Trải nghiệm chạy bộ hoàn hảo</p>
+                    <p className="text-sm opacity-80">
+                      Trải nghiệm chạy bộ hoàn hảo
+                    </p>
                   </div>
                 </div>
               </div>
-              
+
               {/* Floating Elements */}
               <div className="absolute -top-4 -left-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
                 <MapPin className="w-6 h-6 text-white" />
@@ -192,7 +201,8 @@ export default function MobileApp() {
             Tính năng nổi bật
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            VSM Mobile tích hợp đầy đủ các tính năng cần thiết cho việc chạy bộ và kết nối cộng đồng
+            VSM Mobile tích hợp đầy đủ các tính năng cần thiết cho việc chạy bộ
+            và kết nối cộng đồng
           </p>
         </div>
 
@@ -202,10 +212,14 @@ export default function MobileApp() {
             return (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${feature.color}`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${feature.color}`}
+                  >
                     <IconComponent className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{feature.title}</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    {feature.title}
+                  </h3>
                   <p className="text-gray-600">{feature.description}</p>
                 </CardContent>
               </Card>
@@ -228,13 +242,20 @@ export default function MobileApp() {
 
           <div className="grid md:grid-cols-5 gap-6">
             {screenshots.map((screenshot) => (
-              <Card key={screenshot.id} className="hover:shadow-lg transition-shadow">
+              <Card
+                key={screenshot.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="p-4">
                   <div className="aspect-[9/16] bg-gradient-to-b from-gray-200 to-gray-300 rounded-lg mb-4 flex items-center justify-center">
                     <Smartphone className="w-12 h-12 text-gray-500" />
                   </div>
-                  <h4 className="font-semibold text-gray-800 mb-1">{screenshot.title}</h4>
-                  <p className="text-sm text-gray-600">{screenshot.description}</p>
+                  <h4 className="font-semibold text-gray-800 mb-1">
+                    {screenshot.title}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    {screenshot.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -259,13 +280,22 @@ export default function MobileApp() {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    <Star
+                      key={i}
+                      className="w-5 h-5 text-yellow-400 fill-current"
+                    />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-4 italic">"{testimonial.comment}"</p>
+                <p className="text-gray-700 mb-4 italic">
+                  "{testimonial.comment}"
+                </p>
                 <div>
-                  <p className="font-semibold text-gray-800">{testimonial.name}</p>
-                  <p className="text-sm text-gray-500">{testimonial.university}</p>
+                  <p className="font-semibold text-gray-800">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {testimonial.university}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -336,16 +366,33 @@ export default function MobileApp() {
             Bảo mật & Quyền riêng tư
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            VSM cam kết bảo vệ dữ liệu cá nhân của bạn với các tiêu chuẩn bảo mật cao nhất
+            VSM cam kết bảo vệ dữ liệu cá nhân của bạn với các tiêu chuẩn bảo
+            mật cao nhất
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Shield, title: "Mã hóa AES-256", description: "Dữ liệu được bảo vệ tối đa" },
-            { icon: Globe, title: "Server tại VN", description: "Tuân thủ luật Cybersecurity" },
-            { icon: CheckCircle, title: "GDPR Compliant", description: "Quyền kiểm soát dữ liệu" },
-            { icon: Heart, title: "Không bán dữ liệu", description: "Không chia sẻ bên thứ 3" }
+            {
+              icon: Shield,
+              title: "Mã hóa AES-256",
+              description: "Dữ liệu được bảo vệ tối đa",
+            },
+            {
+              icon: Globe,
+              title: "Server tại VN",
+              description: "Tuân thủ luật Cybersecurity",
+            },
+            {
+              icon: CheckCircle,
+              title: "GDPR Compliant",
+              description: "Quyền kiểm soát dữ liệu",
+            },
+            {
+              icon: Heart,
+              title: "Không bán dữ liệu",
+              description: "Không chia sẻ bên thứ 3",
+            },
           ].map((item, index) => {
             const IconComponent = item.icon;
             return (
@@ -353,7 +400,9 @@ export default function MobileApp() {
                 <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <IconComponent className="w-6 h-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-2">{item.title}</h3>
+                <h3 className="font-semibold text-gray-800 mb-2">
+                  {item.title}
+                </h3>
                 <p className="text-sm text-gray-600">{item.description}</p>
               </div>
             );
@@ -368,9 +417,10 @@ export default function MobileApp() {
             Sẵn sàng bắt đầu hành trình?
           </h2>
           <p className="text-xl opacity-90 mb-8">
-            Tải VSM ngay và tham gia cộng đồng chạy bộ sinh viên lớn nhất Việt Nam
+            Tải VSM ngay và tham gia cộng đồng chạy bộ sinh viên lớn nhất Việt
+            Nam
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Button className="bg-black hover:bg-gray-800 text-white h-14 px-8 text-lg">
               <Download className="w-5 h-5 mr-2" />

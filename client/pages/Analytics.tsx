@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ActivityHeatmap from "@/components/ActivityHeatmap";
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Calendar, 
+import {
+  BarChart3,
+  TrendingUp,
+  Calendar,
   Target,
   Activity,
   Clock,
@@ -16,7 +16,7 @@ import {
   MapPin,
   Route,
   Heart,
-  Flame
+  Flame,
 } from "lucide-react";
 
 interface MonthlyStats {
@@ -50,7 +50,7 @@ export default function Analytics() {
       { month: "T9", distance: 38.5, runs: 10, time: 240, calories: 2420 },
       { month: "T10", distance: 61.3, runs: 18, time: 380, calories: 3860 },
       { month: "T11", distance: 48.7, runs: 14, time: 300, calories: 3060 },
-      { month: "T12", distance: 39.2, runs: 11, time: 245, calories: 2470 }
+      { month: "T12", distance: 39.2, runs: 11, time: 245, calories: 2470 },
     ];
     setMonthlyStats(mockStats);
   };
@@ -63,7 +63,7 @@ export default function Analytics() {
       { week: "T5", distance: 16.5, target: 15 },
       { week: "T6", distance: 11.3, target: 15 },
       { week: "T7", distance: 19.7, target: 15 },
-      { week: "CN", distance: 8.4, target: 15 }
+      { week: "CN", distance: 8.4, target: 15 },
     ];
     setWeeklyProgress(mockProgress);
   };
@@ -72,7 +72,7 @@ export default function Analytics() {
     { value: "1month", label: "1 tháng" },
     { value: "3months", label: "3 tháng" },
     { value: "6months", label: "6 tháng" },
-    { value: "1year", label: "1 năm" }
+    { value: "1year", label: "1 năm" },
   ];
 
   const currentStats = {
@@ -83,11 +83,13 @@ export default function Analytics() {
     totalCalories: 18280,
     longestRun: 21.1,
     bestPace: "4:32",
-    activeStreak: 12
+    activeStreak: 12,
   };
 
-  const maxDistance = Math.max(...monthlyStats.map(stat => stat.distance));
-  const maxWeeklyDistance = Math.max(...weeklyProgress.map(week => week.distance));
+  const maxDistance = Math.max(...monthlyStats.map((stat) => stat.distance));
+  const maxWeeklyDistance = Math.max(
+    ...weeklyProgress.map((week) => week.distance),
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -104,15 +106,21 @@ export default function Analytics() {
                 Phân tích chi tiết hoạt động chạy bộ và theo dõi tiến độ
               </p>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               {periods.map((period) => (
                 <Button
                   key={period.value}
-                  variant={selectedPeriod === period.value ? "default" : "outline"}
+                  variant={
+                    selectedPeriod === period.value ? "default" : "outline"
+                  }
                   size="sm"
                   onClick={() => setSelectedPeriod(period.value)}
-                  className={selectedPeriod === period.value ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""}
+                  className={
+                    selectedPeriod === period.value
+                      ? "bg-vsm-orange hover:bg-vsm-orange-dark"
+                      : ""
+                  }
                 >
                   {period.label}
                 </Button>
@@ -128,63 +136,79 @@ export default function Analytics() {
           <Card>
             <CardContent className="p-4 text-center">
               <MapPin className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.totalDistance}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.totalDistance}
+              </div>
               <div className="text-xs text-gray-500">Tổng KM</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 text-center">
               <Activity className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.totalRuns}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.totalRuns}
+              </div>
               <div className="text-xs text-gray-500">Buổi chạy</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 text-center">
               <Clock className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.totalTime}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.totalTime}
+              </div>
               <div className="text-xs text-gray-500">Thời gian</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 text-center">
               <Zap className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.avgPace}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.avgPace}
+              </div>
               <div className="text-xs text-gray-500">Pace TB</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 text-center">
               <Flame className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.totalCalories.toLocaleString()}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.totalCalories.toLocaleString()}
+              </div>
               <div className="text-xs text-gray-500">Calories</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 text-center">
               <Route className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.longestRun}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.longestRun}
+              </div>
               <div className="text-xs text-gray-500">Longest Run</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 text-center">
               <Award className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.bestPace}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.bestPace}
+              </div>
               <div className="text-xs text-gray-500">Best Pace</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 text-center">
               <Target className="w-6 h-6 text-vsm-orange mx-auto mb-2" />
-              <div className="text-xl font-bold text-vsm-black">{currentStats.activeStreak}</div>
+              <div className="text-xl font-bold text-vsm-black">
+                {currentStats.activeStreak}
+              </div>
               <div className="text-xs text-gray-500">Streak</div>
             </CardContent>
           </Card>
@@ -210,22 +234,35 @@ export default function Analytics() {
                 <CardContent>
                   <div className="space-y-4">
                     {monthlyStats.map((stat) => (
-                      <div key={stat.month} className="flex items-center space-x-4">
-                        <div className="w-8 text-sm font-medium text-gray-600">{stat.month}</div>
+                      <div
+                        key={stat.month}
+                        className="flex items-center space-x-4"
+                      >
+                        <div className="w-8 text-sm font-medium text-gray-600">
+                          {stat.month}
+                        </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm text-gray-600">{stat.distance} km</span>
-                            <span className="text-xs text-gray-500">{stat.runs} buổi</span>
+                            <span className="text-sm text-gray-600">
+                              {stat.distance} km
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {stat.runs} buổi
+                            </span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-vsm-orange h-2 rounded-full transition-all duration-300" 
-                              style={{ width: `${(stat.distance / maxDistance) * 100}%` }}
+                            <div
+                              className="bg-vsm-orange h-2 rounded-full transition-all duration-300"
+                              style={{
+                                width: `${(stat.distance / maxDistance) * 100}%`,
+                              }}
                             ></div>
                           </div>
                         </div>
                         <div className="w-16 text-right">
-                          <div className="text-sm font-semibold text-vsm-black">{stat.distance}km</div>
+                          <div className="text-sm font-semibold text-vsm-black">
+                            {stat.distance}km
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -244,21 +281,32 @@ export default function Analytics() {
                 <CardContent>
                   <div className="space-y-4">
                     {weeklyProgress.map((week) => (
-                      <div key={week.week} className="flex items-center space-x-4">
-                        <div className="w-8 text-sm font-medium text-gray-600">{week.week}</div>
+                      <div
+                        key={week.week}
+                        className="flex items-center space-x-4"
+                      >
+                        <div className="w-8 text-sm font-medium text-gray-600">
+                          {week.week}
+                        </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm text-gray-600">{week.distance} km</span>
+                            <span className="text-sm text-gray-600">
+                              {week.distance} km
+                            </span>
                             <span className="text-xs text-gray-500">
                               Mục tiêu: {week.target} km
                             </span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
+                            <div
                               className={`h-2 rounded-full transition-all duration-300 ${
-                                week.distance >= week.target ? 'bg-green-500' : 'bg-vsm-orange'
+                                week.distance >= week.target
+                                  ? "bg-green-500"
+                                  : "bg-vsm-orange"
                               }`}
-                              style={{ width: `${Math.min((week.distance / week.target) * 100, 100)}%` }}
+                              style={{
+                                width: `${Math.min((week.distance / week.target) * 100, 100)}%`,
+                              }}
                             ></div>
                           </div>
                         </div>
@@ -294,7 +342,7 @@ export default function Analytics() {
                     <div className="text-sm text-gray-600">Nhịp tim TB</div>
                     <div className="text-xs text-gray-500 mt-1">bpm</div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Zap className="w-8 h-8 text-green-600" />
@@ -303,23 +351,29 @@ export default function Analytics() {
                     <div className="text-sm text-gray-600">VO2 Max</div>
                     <div className="text-xs text-gray-500 mt-1">ml/kg/min</div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Activity className="w-8 h-8 text-purple-600" />
                     </div>
-                    <div className="text-2xl font-bold text-purple-600">156</div>
+                    <div className="text-2xl font-bold text-purple-600">
+                      156
+                    </div>
                     <div className="text-sm text-gray-600">Cadence TB</div>
                     <div className="text-xs text-gray-500 mt-1">bước/phút</div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Target className="w-8 h-8 text-orange-600" />
                     </div>
-                    <div className="text-2xl font-bold text-orange-600">85%</div>
+                    <div className="text-2xl font-bold text-orange-600">
+                      85%
+                    </div>
                     <div className="text-sm text-gray-600">Hiệu suất</div>
-                    <div className="text-xs text-gray-500 mt-1">so với mục tiêu</div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      so với mục tiêu
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -340,30 +394,44 @@ export default function Analytics() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-medium text-vsm-black">Pace trung bình</div>
-                        <div className="text-sm text-gray-600">So với tháng trước</div>
+                        <div className="font-medium text-vsm-black">
+                          Pace trung bình
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          So với tháng trước
+                        </div>
                       </div>
                       <div className="text-right">
                         <div className="font-bold text-green-600">-0:15</div>
-                        <div className="text-xs text-gray-500">Cải thiện 4.3%</div>
+                        <div className="text-xs text-gray-500">
+                          Cải thiện 4.3%
+                        </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-medium text-vsm-black">Quãng đường/tuần</div>
-                        <div className="text-sm text-gray-600">So với tháng trước</div>
+                        <div className="font-medium text-vsm-black">
+                          Quãng đường/tuần
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          So với tháng trước
+                        </div>
                       </div>
                       <div className="text-right">
                         <div className="font-bold text-green-600">+5.2km</div>
                         <div className="text-xs text-gray-500">Tăng 12.8%</div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-medium text-vsm-black">Tần suất chạy</div>
-                        <div className="text-sm text-gray-600">So với tháng trước</div>
+                        <div className="font-medium text-vsm-black">
+                          Tần suất chạy
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          So với tháng trước
+                        </div>
                       </div>
                       <div className="text-right">
                         <div className="font-bold text-green-600">+2 buổi</div>
@@ -382,30 +450,48 @@ export default function Analytics() {
                   <div className="space-y-4">
                     <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-medium text-yellow-800">VSM Marathon 2025</h3>
-                        <Badge className="bg-yellow-100 text-yellow-700">92 ngày</Badge>
+                        <h3 className="font-medium text-yellow-800">
+                          VSM Marathon 2025
+                        </h3>
+                        <Badge className="bg-yellow-100 text-yellow-700">
+                          92 ngày
+                        </Badge>
                       </div>
                       <div className="text-sm text-yellow-700">
                         Mục tiêu: Hoàn thành 42km dưới 4 giờ
                       </div>
                       <div className="mt-2 w-full bg-yellow-200 rounded-full h-2">
-                        <div className="bg-yellow-500 h-2 rounded-full" style={{width: "68%"}}></div>
+                        <div
+                          className="bg-yellow-500 h-2 rounded-full"
+                          style={{ width: "68%" }}
+                        ></div>
                       </div>
-                      <div className="text-xs text-yellow-600 mt-1">68% hoàn thành kế hoạch tập luyện</div>
+                      <div className="text-xs text-yellow-600 mt-1">
+                        68% hoàn thành kế hoạch tập luyện
+                      </div>
                     </div>
-                    
+
                     <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-medium text-blue-800">Mục tiêu tháng này</h3>
-                        <Badge className="bg-blue-100 text-blue-700">18 ngày</Badge>
+                        <h3 className="font-medium text-blue-800">
+                          Mục tiêu tháng này
+                        </h3>
+                        <Badge className="bg-blue-100 text-blue-700">
+                          18 ngày
+                        </Badge>
                       </div>
                       <div className="text-sm text-blue-700">
                         Chạy 50km trong tháng 12
                       </div>
                       <div className="mt-2 w-full bg-blue-200 rounded-full h-2">
-                        <div className="bg-blue-500 h-2 rounded-full" style={{width: "78%"}}></div>
+                        <div
+                          className="bg-blue-500 h-2 rounded-full"
+                          style={{ width: "78%" }}
+                        ></div>
                       </div>
-                      <div className="text-xs text-blue-600 mt-1">39.2/50km đã hoàn thành</div>
+                      <div className="text-xs text-blue-600 mt-1">
+                        39.2/50km đã hoàn thành
+                      </div>
                     </div>
                   </div>
                 </CardContent>

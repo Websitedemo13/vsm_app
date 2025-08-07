@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  Play, 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  Play,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
   ArrowRight,
   CheckCircle,
   Crown,
@@ -18,14 +18,14 @@ import {
   Users,
   Activity,
   Trophy,
-  Zap
+  Zap,
 } from "lucide-react";
 
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: false
+    rememberMe: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +34,9 @@ export default function Login() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -46,20 +46,23 @@ export default function Login() {
 
     try {
       // Mock authentication
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       // Simulate login success
-      localStorage.setItem('vsm_user', JSON.stringify({
-        id: 'user_1',
-        name: 'Thành Long Nguyen',
-        email: formData.email,
-        isPremium: false,
-        joinedDate: Date.now()
-      }));
+      localStorage.setItem(
+        "vsm_user",
+        JSON.stringify({
+          id: "user_1",
+          name: "Thành Long Nguyen",
+          email: formData.email,
+          isPremium: false,
+          joinedDate: Date.now(),
+        }),
+      );
 
       toast({
         title: "Đăng nhập thành công! 🎉",
-        description: "Chào mừng bạn trở lại VSM!"
+        description: "Chào mừng bạn trở lại VSM!",
       });
 
       // Redirect to profile or home
@@ -68,7 +71,7 @@ export default function Login() {
       toast({
         title: "Lỗi đăng nhập",
         description: "Email hoặc mật khẩu không chính xác",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -77,31 +80,50 @@ export default function Login() {
 
   const handlePremiumUpgrade = () => {
     // Mock premium upgrade
-    localStorage.setItem('vsm_user', JSON.stringify({
-      id: 'user_1',
-      name: 'Thành Long Nguyen',
-      email: formData.email,
-      isPremium: true,
-      premiumExpiry: Date.now() + (365 * 24 * 60 * 60 * 1000),
-      joinedDate: Date.now()
-    }));
+    localStorage.setItem(
+      "vsm_user",
+      JSON.stringify({
+        id: "user_1",
+        name: "Thành Long Nguyen",
+        email: formData.email,
+        isPremium: true,
+        premiumExpiry: Date.now() + 365 * 24 * 60 * 60 * 1000,
+        joinedDate: Date.now(),
+      }),
+    );
 
     setShowPremiumModal(false);
     toast({
       title: "Chúc mừng! 👑",
-      description: "Bạn đã nâng cấp lên Premium thành công!"
+      description: "Bạn đã nâng cấp lên Premium thành công!",
     });
 
     window.location.href = "/profile";
   };
 
   const premiumFeatures = [
-    { icon: Crown, title: "Giáo án chuyên nghiệp", description: "Từ các HLV hàng đầu" },
-    { icon: Activity, title: "Phân tích nâng cao", description: "VO2 Max, Training Load" },
-    { icon: Trophy, title: "Thử thách độc quyền", description: "Segments premium" },
+    {
+      icon: Crown,
+      title: "Giáo án chuyên nghiệp",
+      description: "Từ các HLV hàng đầu",
+    },
+    {
+      icon: Activity,
+      title: "Phân tích nâng cao",
+      description: "VO2 Max, Training Load",
+    },
+    {
+      icon: Trophy,
+      title: "Thử thách độc quyền",
+      description: "Segments premium",
+    },
     { icon: Zap, title: "Ưu tiên hỗ trợ", description: "Hỗ trợ 24/7" },
     { icon: Star, title: "Badge đặc biệt", description: "Hiển thị Premium" },
-    { icon: Users, title: "Nhóm riêng tư", description: "Kết nối Premium users" }
+    {
+      icon: Users,
+      title: "Nhóm riêng tư",
+      description: "Kết nối Premium users",
+    },
   ];
 
   return (
@@ -115,8 +137,10 @@ export default function Login() {
             </div>
             <span className="text-2xl font-bold text-vsm-black">VSM</span>
           </Link>
-          
-          <h2 className="text-3xl font-bold text-vsm-black">Chào mừng trở lại</h2>
+
+          <h2 className="text-3xl font-bold text-vsm-black">
+            Chào mừng trở lại
+          </h2>
           <p className="mt-2 text-gray-600">
             Đăng nhập để tiếp tục hành trình chạy bộ của bạn
           </p>
@@ -125,7 +149,9 @@ export default function Login() {
         {/* Login Form */}
         <Card className="shadow-xl border-0">
           <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl text-center text-vsm-black">Đăng nhập</CardTitle>
+            <CardTitle className="text-2xl text-center text-vsm-black">
+              Đăng nhập
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
@@ -168,7 +194,11 @@ export default function Login() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -183,10 +213,15 @@ export default function Login() {
                     onChange={handleInputChange}
                     className="w-4 h-4 text-vsm-orange border-gray-300 rounded focus:ring-vsm-orange"
                   />
-                  <span className="ml-2 text-sm text-gray-600">Ghi nhớ đăng nhập</span>
+                  <span className="ml-2 text-sm text-gray-600">
+                    Ghi nhớ đăng nhập
+                  </span>
                 </label>
-                
-                <Link to="/forgot-password" className="text-sm text-vsm-orange hover:text-vsm-orange-dark">
+
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-vsm-orange hover:text-vsm-orange-dark"
+                >
                   Quên mật khẩu?
                 </Link>
               </div>
@@ -231,7 +266,10 @@ export default function Login() {
 
             <p className="mt-6 text-center text-sm text-gray-600">
               Chưa có tài khoản?{" "}
-              <Link to="/register" className="text-vsm-orange hover:text-vsm-orange-dark font-medium">
+              <Link
+                to="/register"
+                className="text-vsm-orange hover:text-vsm-orange-dark font-medium"
+              >
                 Đăng ký ngay
               </Link>
             </p>
@@ -278,16 +316,18 @@ export default function Login() {
                 VSM Premium
               </CardTitle>
               <p className="text-gray-600">Unlock toàn bộ trải nghiệm VSM</p>
-              
+
               <div className="mt-4">
-                <div className="text-4xl font-bold text-vsm-orange">299,000đ</div>
+                <div className="text-4xl font-bold text-vsm-orange">
+                  299,000đ
+                </div>
                 <div className="text-sm text-gray-500">một lần / trọn đời</div>
                 <Badge className="mt-2 bg-green-100 text-green-700">
                   Tiết kiệm 60% so với gói tháng
                 </Badge>
               </div>
             </CardHeader>
-            
+
             <CardContent className="space-y-6">
               <div className="grid gap-4">
                 {premiumFeatures.map((feature, index) => {
@@ -298,8 +338,12 @@ export default function Login() {
                         <IconComponent className="w-5 h-5 text-yellow-600" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900">{feature.title}</h4>
-                        <p className="text-sm text-gray-600">{feature.description}</p>
+                        <h4 className="font-medium text-gray-900">
+                          {feature.title}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {feature.description}
+                        </p>
                       </div>
                     </div>
                   );
@@ -314,7 +358,7 @@ export default function Login() {
                   <Crown className="w-5 h-5 mr-2" />
                   Nâng cấp Premium ngay
                 </Button>
-                
+
                 <Button
                   onClick={() => setShowPremiumModal(false)}
                   variant="outline"

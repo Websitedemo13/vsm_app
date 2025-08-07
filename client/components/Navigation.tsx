@@ -16,7 +16,7 @@ import {
   Calendar,
   TrendingUp,
   Crown,
-  LogOut
+  LogOut,
 } from "lucide-react";
 
 export default function Navigation() {
@@ -38,11 +38,11 @@ export default function Navigation() {
     // Fetch notification count
     const fetchNotificationCount = async () => {
       try {
-        const response = await fetch('/api/notifications/user_1');
+        const response = await fetch("/api/notifications/user_1");
         const data = await response.json();
         setNotificationCount(data.unreadCount || 0);
       } catch (error) {
-        console.error('Error fetching notification count:', error);
+        console.error("Error fetching notification count:", error);
       }
     };
 
@@ -69,7 +69,7 @@ export default function Navigation() {
               </div>
               <span className="text-xl font-bold text-vsm-black">VSM</span>
             </Link>
-            
+
             <div className="flex items-center space-x-8">
               {navigation.map((item) => (
                 <Link
@@ -98,12 +98,12 @@ export default function Navigation() {
                 <Bell className="w-5 h-5" />
                 {notificationCount > 0 && (
                   <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs h-4 w-4 flex items-center justify-center p-0 rounded-full">
-                    {notificationCount > 9 ? '9+' : notificationCount}
+                    {notificationCount > 9 ? "9+" : notificationCount}
                   </Badge>
                 )}
               </Link>
             </div>
-            
+
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 {user?.isPremium && (
@@ -115,10 +115,16 @@ export default function Navigation() {
                 <div className="flex items-center space-x-2">
                   <Avatar className="w-8 h-8">
                     <AvatarFallback className="bg-vsm-orange text-white text-sm">
-                      {user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
+                      {user?.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2) || "U"}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    {user?.name}
+                  </span>
                 </div>
                 <Button
                   variant="outline"
@@ -158,7 +164,7 @@ export default function Navigation() {
               </div>
               <span className="text-xl font-bold text-vsm-black">VSM</span>
             </Link>
-            
+
             <Button
               variant="ghost"
               size="sm"
@@ -171,7 +177,7 @@ export default function Navigation() {
               )}
             </Button>
           </div>
-          
+
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
             <div className="border-t border-gray-100 py-4">
@@ -190,7 +196,9 @@ export default function Navigation() {
                     <item.icon className="w-5 h-5" />
                     <span className="font-medium">{item.name}</span>
                     {item.highlighted && (
-                      <Badge className="bg-vsm-orange text-white text-xs">Hot</Badge>
+                      <Badge className="bg-vsm-orange text-white text-xs">
+                        Hot
+                      </Badge>
                     )}
                   </Link>
                 ))}
@@ -209,23 +217,29 @@ export default function Navigation() {
                   <span className="font-medium">Thông báo</span>
                   {notificationCount > 0 && (
                     <Badge className="bg-red-500 text-white text-xs">
-                      {notificationCount > 9 ? '9+' : notificationCount}
+                      {notificationCount > 9 ? "9+" : notificationCount}
                     </Badge>
                   )}
                 </Link>
               </div>
-              
+
               <div className="mt-4 pt-4 border-t border-gray-100">
                 {isAuthenticated ? (
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3 px-3 py-2">
                       <Avatar className="w-10 h-10">
                         <AvatarFallback className="bg-vsm-orange text-white">
-                          {user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
+                          {user?.name
+                            ?.split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .slice(0, 2) || "U"}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium text-gray-800">{user?.name}</p>
+                        <p className="font-medium text-gray-800">
+                          {user?.name}
+                        </p>
                         <p className="text-sm text-gray-500">{user?.email}</p>
                       </div>
                       {user?.isPremium && (
@@ -249,12 +263,18 @@ export default function Navigation() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
                       <Button variant="outline" className="w-full">
                         Đăng nhập
                       </Button>
                     </Link>
-                    <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link
+                      to="/register"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
                       <Button className="w-full bg-vsm-orange hover:bg-vsm-orange-dark text-white">
                         Đăng ký ngay
                       </Button>
@@ -275,9 +295,7 @@ export default function Navigation() {
               key={item.name}
               to={item.href}
               className={`flex flex-col items-center justify-center p-3 relative ${
-                isActive(item.href)
-                  ? "text-vsm-orange"
-                  : "text-gray-500"
+                isActive(item.href) ? "text-vsm-orange" : "text-gray-500"
               }`}
             >
               {item.highlighted && (
@@ -286,7 +304,9 @@ export default function Navigation() {
                 </div>
               )}
               {!item.highlighted && <item.icon className="w-5 h-5" />}
-              <span className={`text-xs mt-1 ${item.highlighted ? "mt-2" : ""}`}>
+              <span
+                className={`text-xs mt-1 ${item.highlighted ? "mt-2" : ""}`}
+              >
                 {item.name}
               </span>
             </Link>

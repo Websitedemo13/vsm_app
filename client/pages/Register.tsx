@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  Play, 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  Play,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
   User,
   GraduationCap,
   Phone,
@@ -19,7 +19,7 @@ import {
   ArrowRight,
   Crown,
   Shield,
-  Heart
+  Heart,
 } from "lucide-react";
 
 export default function Register() {
@@ -34,7 +34,7 @@ export default function Register() {
     password: "",
     confirmPassword: "",
     agreeTerms: false,
-    agreeMarketing: false
+    agreeMarketing: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -57,16 +57,18 @@ export default function Register() {
     "Đại học Công nghệ",
     "Đại học Giao thông vận tải",
     "Đại học Nông nghiệp Hà Nội",
-    "Khác"
+    "Khác",
   ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-    
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -75,7 +77,7 @@ export default function Register() {
       toast({
         title: "Thông tin chưa đầy đủ",
         description: "Vui lòng điền đầy đủ thông tin bắt buộc",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -85,7 +87,7 @@ export default function Register() {
       toast({
         title: "Email không hợp lệ",
         description: "Vui lòng nhập email đúng định dạng",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -98,7 +100,7 @@ export default function Register() {
       toast({
         title: "Thông tin chưa đầy đủ",
         description: "Vui lòng chọn trường đại học và ngày sinh",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -110,7 +112,7 @@ export default function Register() {
       toast({
         title: "Mật khẩu chưa được nhập",
         description: "Vui lòng nhập mật khẩu và xác nhận mật khẩu",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -119,7 +121,7 @@ export default function Register() {
       toast({
         title: "Mật khẩu quá ngắn",
         description: "Mật khẩu phải có ít nhất 6 ký tự",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -128,7 +130,7 @@ export default function Register() {
       toast({
         title: "Mật khẩu không khớp",
         description: "Mật khẩu xác nhận không giống mật khẩu đã nhập",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -137,7 +139,7 @@ export default function Register() {
       toast({
         title: "Chưa đồng ý điều khoản",
         description: "Vui lòng đồng ý với điều khoản sử dụng",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -155,18 +157,18 @@ export default function Register() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateStep3()) return;
 
     setIsLoading(true);
 
     try {
       // Mock registration
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Simulate registration success
       const userData = {
-        id: 'user_' + Date.now(),
+        id: "user_" + Date.now(),
         name: formData.fullName,
         email: formData.email,
         phone: formData.phone,
@@ -174,14 +176,14 @@ export default function Register() {
         studentId: formData.studentId,
         dateOfBirth: formData.dateOfBirth,
         isPremium: false,
-        joinedDate: Date.now()
+        joinedDate: Date.now(),
       };
 
-      localStorage.setItem('vsm_user', JSON.stringify(userData));
+      localStorage.setItem("vsm_user", JSON.stringify(userData));
 
       toast({
         title: "Đăng ký thành công! 🎉",
-        description: "Chào mừng bạn đến với cộng đồng VSM!"
+        description: "Chào mừng bạn đến với cộng đồng VSM!",
       });
 
       // Show premium offer
@@ -190,7 +192,7 @@ export default function Register() {
       toast({
         title: "Lỗi đăng ký",
         description: "Có lỗi xảy ra, vui lòng thử lại",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -198,14 +200,14 @@ export default function Register() {
   };
 
   const handlePremiumUpgrade = () => {
-    const userData = JSON.parse(localStorage.getItem('vsm_user') || '{}');
+    const userData = JSON.parse(localStorage.getItem("vsm_user") || "{}");
     userData.isPremium = true;
-    userData.premiumExpiry = Date.now() + (365 * 24 * 60 * 60 * 1000);
-    localStorage.setItem('vsm_user', JSON.stringify(userData));
+    userData.premiumExpiry = Date.now() + 365 * 24 * 60 * 60 * 1000;
+    localStorage.setItem("vsm_user", JSON.stringify(userData));
 
     toast({
       title: "Chúc mừng! 👑",
-      description: "Bạn đã nâng cấp lên Premium thành công!"
+      description: "Bạn đã nâng cấp lên Premium thành công!",
     });
 
     window.location.href = "/profile";
@@ -216,9 +218,17 @@ export default function Register() {
   };
 
   const steps = [
-    { number: 1, title: "Thông tin cơ bản", description: "Họ tên, email, số điện thoại" },
-    { number: 2, title: "Thông tin sinh viên", description: "Trường đại học, ngày sinh" },
-    { number: 3, title: "Bảo mật", description: "Mật khẩu và xác nhận" }
+    {
+      number: 1,
+      title: "Thông tin cơ bản",
+      description: "Họ tên, email, số điện thoại",
+    },
+    {
+      number: 2,
+      title: "Thông tin sinh viên",
+      description: "Trường đại học, ngày sinh",
+    },
+    { number: 3, title: "Bảo mật", description: "Mật khẩu và xác nhận" },
   ];
 
   if (showPremiumOffer) {
@@ -232,17 +242,25 @@ export default function Register() {
             <CardTitle className="text-3xl bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
               🎉 Chúc mừng!
             </CardTitle>
-            <p className="text-gray-600 text-lg">Bạn đã tham gia cộng đồng VSM thành công!</p>
+            <p className="text-gray-600 text-lg">
+              Bạn đã tham gia cộng đồng VSM thành công!
+            </p>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             <div className="text-center bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
               <h3 className="text-xl font-bold text-gray-800 mb-2">
                 🚀 Ưu đãi đặc biệt cho thành viên mới!
               </h3>
-              <div className="text-3xl font-bold text-vsm-orange mb-1">299,000đ</div>
-              <div className="text-sm text-gray-500 line-through mb-2">499,000đ</div>
-              <Badge className="bg-red-100 text-red-700">Giảm 40% - Chỉ hôm nay!</Badge>
+              <div className="text-3xl font-bold text-vsm-orange mb-1">
+                299,000đ
+              </div>
+              <div className="text-sm text-gray-500 line-through mb-2">
+                499,000đ
+              </div>
+              <Badge className="bg-red-100 text-red-700">
+                Giảm 40% - Chỉ hôm nay!
+              </Badge>
             </div>
 
             <div className="space-y-3">
@@ -272,7 +290,7 @@ export default function Register() {
                 <Crown className="w-5 h-5 mr-2" />
                 Nâng cấp Premium ngay - 299,000đ
               </Button>
-              
+
               <Button
                 onClick={handleSkipPremium}
                 variant="outline"
@@ -303,8 +321,10 @@ export default function Register() {
             </div>
             <span className="text-2xl font-bold text-vsm-black">VSM</span>
           </Link>
-          
-          <h2 className="text-3xl font-bold text-vsm-black">Tham gia cộng đồng</h2>
+
+          <h2 className="text-3xl font-bold text-vsm-black">
+            Tham gia cộng đồng
+          </h2>
           <p className="mt-2 text-gray-600">
             Kết nối với hàng nghìn sinh viên đam mê chạy bộ
           </p>
@@ -314,11 +334,13 @@ export default function Register() {
         <div className="flex items-center justify-between mb-8">
           {steps.map((step, index) => (
             <div key={step.number} className="flex items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                currentStep >= step.number 
-                  ? 'bg-vsm-orange text-white' 
-                  : 'bg-gray-200 text-gray-500'
-              }`}>
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                  currentStep >= step.number
+                    ? "bg-vsm-orange text-white"
+                    : "bg-gray-200 text-gray-500"
+                }`}
+              >
                 {currentStep > step.number ? (
                   <CheckCircle className="w-5 h-5" />
                 ) : (
@@ -326,9 +348,11 @@ export default function Register() {
                 )}
               </div>
               {index < steps.length - 1 && (
-                <div className={`w-12 h-0.5 ml-2 ${
-                  currentStep > step.number ? 'bg-vsm-orange' : 'bg-gray-200'
-                }`} />
+                <div
+                  className={`w-12 h-0.5 ml-2 ${
+                    currentStep > step.number ? "bg-vsm-orange" : "bg-gray-200"
+                  }`}
+                />
               )}
             </div>
           ))}
@@ -344,9 +368,18 @@ export default function Register() {
               {steps[currentStep - 1].description}
             </p>
           </CardHeader>
-          
+
           <CardContent>
-            <form onSubmit={currentStep === 3 ? handleRegister : (e) => { e.preventDefault(); handleNext(); }}>
+            <form
+              onSubmit={
+                currentStep === 3
+                  ? handleRegister
+                  : (e) => {
+                      e.preventDefault();
+                      handleNext();
+                    }
+              }
+            >
               {/* Step 1: Basic Info */}
               {currentStep === 1 && (
                 <div className="space-y-4">
@@ -424,7 +457,9 @@ export default function Register() {
                       >
                         <option value="">Chọn trường đại học</option>
                         {universities.map((uni) => (
-                          <option key={uni} value={uni}>{uni}</option>
+                          <option key={uni} value={uni}>
+                            {uni}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -486,7 +521,11 @@ export default function Register() {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                       >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        {showPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -508,10 +547,16 @@ export default function Register() {
                       />
                       <button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                       >
-                        {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        {showConfirmPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -528,11 +573,17 @@ export default function Register() {
                       />
                       <span className="text-sm text-gray-600">
                         Tôi đồng ý với{" "}
-                        <Link to="/terms" className="text-vsm-orange hover:underline">
+                        <Link
+                          to="/terms"
+                          className="text-vsm-orange hover:underline"
+                        >
                           Điều khoản sử dụng
                         </Link>{" "}
                         và{" "}
-                        <Link to="/privacy" className="text-vsm-orange hover:underline">
+                        <Link
+                          to="/privacy"
+                          className="text-vsm-orange hover:underline"
+                        >
                           Chính sách bảo mật
                         </Link>
                       </span>
@@ -565,11 +616,11 @@ export default function Register() {
                     Quay lại
                   </Button>
                 )}
-                
+
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className={`${currentStep === 1 ? 'w-full' : 'flex-1'} h-12 bg-vsm-orange hover:bg-vsm-orange-dark text-white text-lg font-medium`}
+                  className={`${currentStep === 1 ? "w-full" : "flex-1"} h-12 bg-vsm-orange hover:bg-vsm-orange-dark text-white text-lg font-medium`}
                 >
                   {isLoading ? (
                     <div className="flex items-center space-x-2">
@@ -578,7 +629,9 @@ export default function Register() {
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2">
-                      <span>{currentStep === 3 ? "Hoàn thành đăng ký" : "Tiếp tục"}</span>
+                      <span>
+                        {currentStep === 3 ? "Hoàn thành đăng ký" : "Tiếp tục"}
+                      </span>
                       <ArrowRight className="w-5 h-5" />
                     </div>
                   )}
@@ -588,7 +641,10 @@ export default function Register() {
 
             <p className="mt-6 text-center text-sm text-gray-600">
               Đã có tài khoản?{" "}
-              <Link to="/login" className="text-vsm-orange hover:text-vsm-orange-dark font-medium">
+              <Link
+                to="/login"
+                className="text-vsm-orange hover:text-vsm-orange-dark font-medium"
+              >
                 Đăng nhập ngay
               </Link>
             </p>
@@ -601,7 +657,9 @@ export default function Register() {
             <div className="flex items-center space-x-3">
               <Shield className="w-6 h-6 text-green-600" />
               <div>
-                <h3 className="font-medium text-green-800">Bảo mật thông tin</h3>
+                <h3 className="font-medium text-green-800">
+                  Bảo mật thông tin
+                </h3>
                 <p className="text-sm text-green-600">
                   Thông tin của bạn được mã hóa và bảo vệ an toàn 100%
                 </p>

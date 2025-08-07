@@ -43,39 +43,112 @@ const App = () => (
               <Route path="/register" element={<Register />} />
 
               {/* Routes with navigation */}
-              <Route path="/*" element={
-                <div>
-                  <Navigation />
-                  <div className="pt-16 pb-20 md:pb-0">
-                    <Routes>
-                      {/* Public pages */}
-                      <Route path="/" element={<Index />} />
-                      <Route path="/mobile-app" element={<MobileApp />} />
-                      <Route path="/community" element={<AuthGuard fallback="preview"><Community /></AuthGuard>} />
-                      <Route path="/help" element={<Help />} />
-                      <Route path="/contact" element={<Contact />} />
-                      <Route path="/faq" element={<FAQ />} />
+              <Route
+                path="/*"
+                element={
+                  <div>
+                    <Navigation />
+                    <div className="pt-16 pb-20 md:pb-0">
+                      <Routes>
+                        {/* Public pages */}
+                        <Route path="/" element={<Index />} />
+                        <Route path="/mobile-app" element={<MobileApp />} />
+                        <Route
+                          path="/community"
+                          element={
+                            <AuthGuard fallback="preview">
+                              <Community />
+                            </AuthGuard>
+                          }
+                        />
+                        <Route path="/help" element={<Help />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/faq" element={<FAQ />} />
 
-                      {/* Public with preview mode */}
-                      <Route path="/news" element={<AuthGuard fallback="preview"><News /></AuthGuard>} />
-                      <Route path="/events" element={<AuthGuard fallback="preview"><Events /></AuthGuard>} />
-                      <Route path="/store" element={<AuthGuard fallback="preview"><Store /></AuthGuard>} />
+                        {/* Public with preview mode */}
+                        <Route
+                          path="/news"
+                          element={
+                            <AuthGuard fallback="preview">
+                              <News />
+                            </AuthGuard>
+                          }
+                        />
+                        <Route
+                          path="/events"
+                          element={
+                            <AuthGuard fallback="preview">
+                              <Events />
+                            </AuthGuard>
+                          }
+                        />
+                        <Route
+                          path="/store"
+                          element={
+                            <AuthGuard fallback="preview">
+                              <Store />
+                            </AuthGuard>
+                          }
+                        />
 
-                      {/* Protected routes - require login */}
-                      <Route path="/feed" element={<AuthGuard><Feed /></AuthGuard>} />
-                      <Route path="/run" element={<AuthGuard><Run /></AuthGuard>} />
-                      <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
-                      <Route path="/notifications" element={<AuthGuard><Notifications /></AuthGuard>} />
+                        {/* Protected routes - require login */}
+                        <Route
+                          path="/feed"
+                          element={
+                            <AuthGuard>
+                              <Feed />
+                            </AuthGuard>
+                          }
+                        />
+                        <Route
+                          path="/run"
+                          element={
+                            <AuthGuard>
+                              <Run />
+                            </AuthGuard>
+                          }
+                        />
+                        <Route
+                          path="/profile"
+                          element={
+                            <AuthGuard>
+                              <Profile />
+                            </AuthGuard>
+                          }
+                        />
+                        <Route
+                          path="/notifications"
+                          element={
+                            <AuthGuard>
+                              <Notifications />
+                            </AuthGuard>
+                          }
+                        />
 
-                      {/* Premium routes - require premium subscription */}
-                      <Route path="/segments" element={<AuthGuard requiresPremium><Segments /></AuthGuard>} />
-                      <Route path="/analytics" element={<AuthGuard requiresPremium><Analytics /></AuthGuard>} />
+                        {/* Premium routes - require premium subscription */}
+                        <Route
+                          path="/segments"
+                          element={
+                            <AuthGuard requiresPremium>
+                              <Segments />
+                            </AuthGuard>
+                          }
+                        />
+                        <Route
+                          path="/analytics"
+                          element={
+                            <AuthGuard requiresPremium>
+                              <Analytics />
+                            </AuthGuard>
+                          }
+                        />
 
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </div>
                   </div>
-                </div>
-              } />
+                }
+              />
             </Routes>
           </div>
         </AuthProvider>

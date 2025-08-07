@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  MapPin, 
-  Calendar, 
-  Filter, 
+import {
+  MapPin,
+  Calendar,
+  Filter,
   Download,
   Share2,
   Maximize2,
@@ -14,7 +14,7 @@ import {
   Activity,
   TrendingUp,
   Clock,
-  Route
+  Route,
 } from "lucide-react";
 
 interface HeatmapData {
@@ -72,13 +72,13 @@ export default function ActivityHeatmap() {
           { lat: 21.0295, lng: 105.8555 },
           { lat: 21.0275, lng: 105.8565 },
           { lat: 21.0265, lng: 105.8545 },
-          { lat: 21.0285, lng: 105.8542 }
+          { lat: 21.0285, lng: 105.8542 },
         ],
         distance: 1.8,
         frequency: 23,
         lastRun: "2024-12-12",
         avgPace: "5:15",
-        color: "#FF6B00"
+        color: "#FF6B00",
       },
       {
         id: "west-lake-loop",
@@ -92,13 +92,13 @@ export default function ActivityHeatmap() {
           { lat: 21.0345, lng: 105.8425 },
           { lat: 21.0325, lng: 105.8385 },
           { lat: 21.0345, lng: 105.8345 },
-          { lat: 21.0365, lng: 105.8345 }
+          { lat: 21.0365, lng: 105.8345 },
         ],
         distance: 13.2,
         frequency: 15,
         lastRun: "2024-12-10",
         avgPace: "5:45",
-        color: "#4285F4"
+        color: "#4285F4",
       },
       {
         id: "bach-khoa-campus",
@@ -109,14 +109,14 @@ export default function ActivityHeatmap() {
           { lat: 21.0087, lng: 105.8453 },
           { lat: 21.0077, lng: 105.8463 },
           { lat: 21.0067, lng: 105.8453 },
-          { lat: 21.0067, lng: 105.8433 }
+          { lat: 21.0067, lng: 105.8433 },
         ],
         distance: 2.1,
         frequency: 18,
         lastRun: "2024-12-11",
         avgPace: "5:30",
-        color: "#34A853"
-      }
+        color: "#34A853",
+      },
     ];
     setPopularRoutes(mockRoutes);
   };
@@ -125,7 +125,7 @@ export default function ActivityHeatmap() {
     { value: "week", label: "Tuần này" },
     { value: "month", label: "Tháng này" },
     { value: "year", label: "Năm này" },
-    { value: "all", label: "Tất cả" }
+    { value: "all", label: "Tất cả" },
   ];
 
   const getIntensityColor = (intensity: number) => {
@@ -138,9 +138,9 @@ export default function ActivityHeatmap() {
 
   const exportHeatmap = () => {
     // Mock export functionality
-    const blob = new Blob(['Mock heatmap data export'], { type: 'text/plain' });
+    const blob = new Blob(["Mock heatmap data export"], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `vsm-heatmap-${selectedPeriod}.json`;
     a.click();
@@ -162,7 +162,9 @@ export default function ActivityHeatmap() {
                 variant={showHeatmap ? "default" : "outline"}
                 size="sm"
                 onClick={() => setShowHeatmap(!showHeatmap)}
-                className={showHeatmap ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""}
+                className={
+                  showHeatmap ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""
+                }
               >
                 <TrendingUp className="w-4 h-4 mr-1" />
                 Heatmap
@@ -171,7 +173,9 @@ export default function ActivityHeatmap() {
                 variant={showRoutes ? "default" : "outline"}
                 size="sm"
                 onClick={() => setShowRoutes(!showRoutes)}
-                className={showRoutes ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""}
+                className={
+                  showRoutes ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""
+                }
               >
                 <Route className="w-4 h-4 mr-1" />
                 Routes
@@ -192,10 +196,16 @@ export default function ActivityHeatmap() {
             {periods.map((period) => (
               <Button
                 key={period.value}
-                variant={selectedPeriod === period.value ? "default" : "outline"}
+                variant={
+                  selectedPeriod === period.value ? "default" : "outline"
+                }
                 size="sm"
                 onClick={() => setSelectedPeriod(period.value)}
-                className={selectedPeriod === period.value ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""}
+                className={
+                  selectedPeriod === period.value
+                    ? "bg-vsm-orange hover:bg-vsm-orange-dark"
+                    : ""
+                }
               >
                 {period.label}
               </Button>
@@ -203,7 +213,10 @@ export default function ActivityHeatmap() {
           </div>
 
           {/* Map Container */}
-          <div className="relative bg-gray-100 rounded-lg overflow-hidden" style={{ height: "500px" }}>
+          <div
+            className="relative bg-gray-100 rounded-lg overflow-hidden"
+            style={{ height: "500px" }}
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-green-100 via-blue-100 to-purple-100">
               {/* Simulated Map Background */}
               <div className="absolute inset-0 opacity-30">
@@ -215,58 +228,78 @@ export default function ActivityHeatmap() {
               </div>
 
               {/* Heatmap Points */}
-              {showHeatmap && heatmapData.map((point, index) => (
-                <div
-                  key={index}
-                  className={`absolute w-6 h-6 rounded-full ${getIntensityColor(point.intensity)} opacity-70 -translate-x-1/2 -translate-y-1/2 animate-pulse`}
-                  style={{
-                    left: `${((point.lng - 105.7) / 0.2) * 100}%`,
-                    top: `${((21.1 - point.lat) / 0.15) * 100}%`,
-                    transform: `translate(-50%, -50%) scale(${0.5 + point.intensity})`
-                  }}
-                  title={`${point.activities} hoạt động`}
-                />
-              ))}
+              {showHeatmap &&
+                heatmapData.map((point, index) => (
+                  <div
+                    key={index}
+                    className={`absolute w-6 h-6 rounded-full ${getIntensityColor(point.intensity)} opacity-70 -translate-x-1/2 -translate-y-1/2 animate-pulse`}
+                    style={{
+                      left: `${((point.lng - 105.7) / 0.2) * 100}%`,
+                      top: `${((21.1 - point.lat) / 0.15) * 100}%`,
+                      transform: `translate(-50%, -50%) scale(${0.5 + point.intensity})`,
+                    }}
+                    title={`${point.activities} hoạt động`}
+                  />
+                ))}
 
               {/* Route Lines */}
-              {showRoutes && popularRoutes.map((route) => (
-                <svg
-                  key={route.id}
-                  className="absolute inset-0 w-full h-full pointer-events-none"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d={`M ${route.coordinates.map(coord => 
-                      `${((coord.lng - 105.7) / 0.2) * 100},${((21.1 - coord.lat) / 0.15) * 100}`
-                    ).join(' L ')}`}
-                    stroke={route.color}
-                    strokeWidth="0.5"
-                    fill="none"
-                    opacity="0.8"
-                  />
-                </svg>
-              ))}
+              {showRoutes &&
+                popularRoutes.map((route) => (
+                  <svg
+                    key={route.id}
+                    className="absolute inset-0 w-full h-full pointer-events-none"
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d={`M ${route.coordinates
+                        .map(
+                          (coord) =>
+                            `${((coord.lng - 105.7) / 0.2) * 100},${((21.1 - coord.lat) / 0.15) * 100}`,
+                        )
+                        .join(" L ")}`}
+                      stroke={route.color}
+                      strokeWidth="0.5"
+                      fill="none"
+                      opacity="0.8"
+                    />
+                  </svg>
+                ))}
 
               {/* Map Labels */}
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                <h3 className="font-semibold text-vsm-black mb-1">Hà Nội, Việt Nam</h3>
+                <h3 className="font-semibold text-vsm-black mb-1">
+                  Hà Nội, Việt Nam
+                </h3>
                 <p className="text-sm text-gray-600">Khu vực hoạt động chính</p>
               </div>
 
               {/* Legend */}
               <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                <h4 className="font-medium text-sm text-vsm-black mb-2">Cường độ hoạt động</h4>
+                <h4 className="font-medium text-sm text-vsm-black mb-2">
+                  Cường độ hoạt động
+                </h4>
                 <div className="flex items-center space-x-2">
                   {[
                     { intensity: 0.9, label: "Rất cao", color: "bg-red-500" },
                     { intensity: 0.7, label: "Cao", color: "bg-orange-500" },
-                    { intensity: 0.5, label: "Trung bình", color: "bg-yellow-500" },
-                    { intensity: 0.3, label: "Thấp", color: "bg-green-500" }
+                    {
+                      intensity: 0.5,
+                      label: "Trung bình",
+                      color: "bg-yellow-500",
+                    },
+                    { intensity: 0.3, label: "Thấp", color: "bg-green-500" },
                   ].map((item) => (
-                    <div key={item.intensity} className="flex items-center space-x-1">
-                      <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
-                      <span className="text-xs text-gray-600">{item.label}</span>
+                    <div
+                      key={item.intensity}
+                      className="flex items-center space-x-1"
+                    >
+                      <div
+                        className={`w-3 h-3 rounded-full ${item.color}`}
+                      ></div>
+                      <span className="text-xs text-gray-600">
+                        {item.label}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -274,13 +307,25 @@ export default function ActivityHeatmap() {
 
               {/* Zoom Controls */}
               <div className="absolute top-4 right-4 flex flex-col space-y-1">
-                <Button variant="outline" size="sm" className="bg-white/90 backdrop-blur-sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/90 backdrop-blur-sm"
+                >
                   <Maximize2 className="w-4 h-4" />
                 </Button>
-                <Button variant="outline" size="sm" className="bg-white/90 backdrop-blur-sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/90 backdrop-blur-sm"
+                >
                   <RotateCcw className="w-4 h-4" />
                 </Button>
-                <Button variant="outline" size="sm" className="bg-white/90 backdrop-blur-sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/90 backdrop-blur-sm"
+                >
                   <Eye className="w-4 h-4" />
                 </Button>
               </div>
@@ -300,16 +345,21 @@ export default function ActivityHeatmap() {
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4">
             {popularRoutes.map((route) => (
-              <Card key={route.id} className="hover:shadow-lg transition-shadow">
+              <Card
+                key={route.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-vsm-black">{route.name}</h3>
-                    <div 
-                      className="w-4 h-4 rounded-full" 
+                    <h3 className="font-semibold text-vsm-black">
+                      {route.name}
+                    </h3>
+                    <div
+                      className="w-4 h-4 rounded-full"
                       style={{ backgroundColor: route.color }}
                     ></div>
                   </div>
-                  
+
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Quãng đường:</span>
@@ -317,7 +367,9 @@ export default function ActivityHeatmap() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Tần suất:</span>
-                      <span className="font-medium">{route.frequency} lần chạy</span>
+                      <span className="font-medium">
+                        {route.frequency} lần chạy
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Pace TB:</span>
@@ -326,17 +378,20 @@ export default function ActivityHeatmap() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Lần cuối:</span>
                       <span className="font-medium">
-                        {new Date(route.lastRun).toLocaleDateString('vi-VN')}
+                        {new Date(route.lastRun).toLocaleDateString("vi-VN")}
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="flex space-x-2 mt-4">
                     <Button size="sm" variant="outline" className="flex-1">
                       <Share2 className="w-4 h-4 mr-1" />
                       Chia sẻ
                     </Button>
-                    <Button size="sm" className="flex-1 bg-vsm-orange hover:bg-vsm-orange-dark text-white">
+                    <Button
+                      size="sm"
+                      className="flex-1 bg-vsm-orange hover:bg-vsm-orange-dark text-white"
+                    >
                       <MapPin className="w-4 h-4 mr-1" />
                       Chạy lại
                     </Button>
@@ -357,7 +412,7 @@ export default function ActivityHeatmap() {
             <div className="text-sm text-gray-500">Địa điểm đã chạy</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6 text-center">
             <Route className="w-8 h-8 text-vsm-orange mx-auto mb-2" />
@@ -365,7 +420,7 @@ export default function ActivityHeatmap() {
             <div className="text-sm text-gray-500">Routes yêu thích</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6 text-center">
             <Clock className="w-8 h-8 text-vsm-orange mx-auto mb-2" />
@@ -373,7 +428,7 @@ export default function ActivityHeatmap() {
             <div className="text-sm text-gray-500">Tổng thời gian</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6 text-center">
             <Activity className="w-8 h-8 text-vsm-orange mx-auto mb-2" />

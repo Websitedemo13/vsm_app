@@ -71,7 +71,7 @@ const mockUser: User = {
   isPremium: false,
   totalDistance: 284.5,
   totalRuns: 47,
-  joinedDate: Date.now() - (60 * 24 * 60 * 60 * 1000) // 60 days ago
+  joinedDate: Date.now() - 60 * 24 * 60 * 60 * 1000, // 60 days ago
 };
 users.set("user_1", mockUser);
 
@@ -93,7 +93,7 @@ const trainingPlans: TrainingPlan[] = [
         description: "30 phút: Chạy 1 phút, đi bộ 2 phút (lặp lại 10 lần)",
         duration: "30 phút",
         type: "Easy Run",
-        completed: false
+        completed: false,
       },
       {
         id: "s2",
@@ -103,10 +103,10 @@ const trainingPlans: TrainingPlan[] = [
         description: "Tập yoga hoặc bơi lội nhẹ nhàng",
         duration: "30 phút",
         type: "Cross Training",
-        completed: false
-      }
+        completed: false,
+      },
     ],
-    isPremium: false
+    isPremium: false,
   },
   {
     id: "plan_2",
@@ -124,10 +124,10 @@ const trainingPlans: TrainingPlan[] = [
         description: "Chạy đều 6km với pace thoải mái",
         distance: "6km",
         type: "Easy Run",
-        completed: false
-      }
+        completed: false,
+      },
     ],
-    isPremium: true
+    isPremium: true,
   },
   {
     id: "plan_3",
@@ -137,8 +137,8 @@ const trainingPlans: TrainingPlan[] = [
     difficulty: "Advanced",
     weeks: 16,
     sessions: [],
-    isPremium: true
-  }
+    isPremium: true,
+  },
 ];
 
 // Mock notifications
@@ -148,27 +148,27 @@ const mockNotifications: Notification[] = [
     title: "🎉 VSM Marathon 2025 đã mở đăng ký!",
     message: "Đăng ký ngay để nhận early bird discount 30%",
     type: "event",
-    timestamp: Date.now() - (2 * 60 * 60 * 1000),
+    timestamp: Date.now() - 2 * 60 * 60 * 1000,
     isRead: false,
-    actionUrl: "/events/marathon-2025"
+    actionUrl: "/events/marathon-2025",
   },
   {
-    id: "notif_2", 
+    id: "notif_2",
     title: "🆕 Sản phẩm mới: Giày VSM Speed Pro",
     message: "Giày chạy bộ thế hệ mới với công nghệ đệm air",
     type: "product",
-    timestamp: Date.now() - (6 * 60 * 60 * 1000),
+    timestamp: Date.now() - 6 * 60 * 60 * 1000,
     isRead: false,
-    actionUrl: "/store/product/vsm-speed-pro"
+    actionUrl: "/store/product/vsm-speed-pro",
   },
   {
     id: "notif_3",
     title: "🏆 Bạn đã đạt thành tích mới!",
     message: "Chúc mừng! Bạn đã chạy được tổng cộng 250km",
     type: "achievement",
-    timestamp: Date.now() - (12 * 60 * 60 * 1000),
-    isRead: true
-  }
+    timestamp: Date.now() - 12 * 60 * 60 * 1000,
+    isRead: true,
+  },
 ];
 
 userNotifications.set("user_1", mockNotifications);
@@ -176,7 +176,7 @@ userNotifications.set("user_1", mockNotifications);
 export const getUserProfile: RequestHandler = (req, res) => {
   const { userId } = req.params;
   const user = users.get(userId);
-  
+
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
@@ -187,14 +187,14 @@ export const getUserProfile: RequestHandler = (req, res) => {
 export const upgradeToPremiUm: RequestHandler = (req, res) => {
   const { userId } = req.body;
   const user = users.get(userId);
-  
+
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
 
   // Simulate premium upgrade
   user.isPremium = true;
-  user.premiumExpiry = Date.now() + (365 * 24 * 60 * 60 * 1000); // 1 year
+  user.premiumExpiry = Date.now() + 365 * 24 * 60 * 60 * 1000; // 1 year
 
   // Give welcome vouchers
   const welcomeVouchers: Voucher[] = [
@@ -206,9 +206,9 @@ export const upgradeToPremiUm: RequestHandler = (req, res) => {
       discountType: "percentage",
       discountValue: 20,
       minimumAmount: 200000,
-      expiryDate: Date.now() + (30 * 24 * 60 * 60 * 1000),
+      expiryDate: Date.now() + 30 * 24 * 60 * 60 * 1000,
       isUsed: false,
-      category: "welcome"
+      category: "welcome",
     },
     {
       id: `voucher_${Date.now()}_2`,
@@ -218,10 +218,10 @@ export const upgradeToPremiUm: RequestHandler = (req, res) => {
       discountType: "fixed",
       discountValue: 50000,
       minimumAmount: 500000,
-      expiryDate: Date.now() + (60 * 24 * 60 * 60 * 1000),
+      expiryDate: Date.now() + 60 * 24 * 60 * 60 * 1000,
       isUsed: false,
-      category: "shipping"
-    }
+      category: "shipping",
+    },
   ];
 
   userVouchers.set(userId, welcomeVouchers);
@@ -230,67 +230,70 @@ export const upgradeToPremiUm: RequestHandler = (req, res) => {
   const upgradeNotification: Notification = {
     id: `notif_${Date.now()}`,
     title: "🎉 Chào mừng đến Premium!",
-    message: "Bạn đã unlock thành công tài khoản Premium. Nhận ngay 2 voucher khuyến mãi!",
+    message:
+      "Bạn đã unlock thành công tài khoản Premium. Nhận ngay 2 voucher khuyến mãi!",
     type: "achievement",
     timestamp: Date.now(),
-    isRead: false
+    isRead: false,
   };
 
   const notifications = userNotifications.get(userId) || [];
   notifications.unshift(upgradeNotification);
   userNotifications.set(userId, notifications);
 
-  res.json({ 
+  res.json({
     message: "Premium upgrade successful!",
     user,
-    vouchers: welcomeVouchers
+    vouchers: welcomeVouchers,
   });
 };
 
 export const getTrainingPlans: RequestHandler = (req, res) => {
   const { userId } = req.params;
   const user = users.get(userId);
-  
+
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
 
   // Filter plans based on premium status
-  const availablePlans = trainingPlans.filter(plan => 
-    !plan.isPremium || user.isPremium
+  const availablePlans = trainingPlans.filter(
+    (plan) => !plan.isPremium || user.isPremium,
   );
 
-  res.json({ 
+  res.json({
     plans: availablePlans,
-    userPremium: user.isPremium
+    userPremium: user.isPremium,
   });
 };
 
 export const getUserVouchers: RequestHandler = (req, res) => {
   const { userId } = req.params;
   const vouchers = userVouchers.get(userId) || [];
-  
+
   // Filter active vouchers
-  const activeVouchers = vouchers.filter(v => !v.isUsed && v.expiryDate > Date.now());
-  
+  const activeVouchers = vouchers.filter(
+    (v) => !v.isUsed && v.expiryDate > Date.now(),
+  );
+
   res.json({ vouchers: activeVouchers });
 };
 
 export const getUserNotifications: RequestHandler = (req, res) => {
   const { userId } = req.params;
   const notifications = userNotifications.get(userId) || [];
-  
-  res.json({ 
+
+  res.json({
     notifications: notifications.sort((a, b) => b.timestamp - a.timestamp),
-    unreadCount: notifications.filter(n => !n.isRead).length
+    unreadCount: notifications.filter((n) => !n.isRead).length,
   });
 };
 
 export const markNotificationRead: RequestHandler = (req, res) => {
   const { userId, notificationId } = req.body;
   const notifications = userNotifications.get(userId) || [];
-  
-  const notification = notifications.find(n => n.id === notificationId);
+
+  const notification = notifications.find((n) => n.id === notificationId);
   if (notification) {
     notification.isRead = true;
     userNotifications.set(userId, notifications);
@@ -302,8 +305,8 @@ export const markNotificationRead: RequestHandler = (req, res) => {
 export const markAllNotificationsRead: RequestHandler = (req, res) => {
   const { userId } = req.body;
   const notifications = userNotifications.get(userId) || [];
-  
-  notifications.forEach(n => n.isRead = true);
+
+  notifications.forEach((n) => (n.isRead = true));
   userNotifications.set(userId, notifications);
 
   res.json({ success: true });

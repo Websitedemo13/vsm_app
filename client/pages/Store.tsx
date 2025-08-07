@@ -16,7 +16,7 @@ import {
   Gift,
   Percent,
   Tag,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 
 interface Voucher {
@@ -43,16 +43,23 @@ export default function Store() {
 
   const fetchVouchers = async () => {
     try {
-      const response = await fetch('/api/vouchers/user_1');
+      const response = await fetch("/api/vouchers/user_1");
       const data = await response.json();
       setAvailableVouchers(data.vouchers || []);
     } catch (error) {
-      console.error('Error fetching vouchers:', error);
+      console.error("Error fetching vouchers:", error);
     }
   };
 
-  const categories = ["Tất cả", "Áo thun", "Giày chạy", "Phụ kiện", "Đồ uống", "Thiết bị"];
-  
+  const categories = [
+    "Tất cả",
+    "Áo thun",
+    "Giày chạy",
+    "Phụ kiện",
+    "Đồ uống",
+    "Thiết bị",
+  ];
+
   const products = [
     {
       id: 1,
@@ -65,7 +72,8 @@ export default function Store() {
       reviews: 124,
       category: "Áo thun",
       badge: "Bán chạy",
-      description: "Áo thun chạy bộ chính thức VSM với chất liệu thấm hút mồ hôi tốt"
+      description:
+        "Áo thun chạy bộ chính thức VSM với chất liệu thấm hút mồ hôi tốt",
     },
     {
       id: 2,
@@ -78,7 +86,8 @@ export default function Store() {
       reviews: 89,
       category: "Giày chạy",
       badge: "Mới nhất",
-      description: "Giày chạy bộ chuyên nghiệp với công nghệ đệm air và thiết kế nhẹ"
+      description:
+        "Giày chạy bộ chuyên nghiệp với công nghệ đệm air và thiết kế nhẹ",
     },
     {
       id: 3,
@@ -91,7 +100,8 @@ export default function Store() {
       reviews: 203,
       category: "Phụ kiện",
       badge: "",
-      description: "Bình nước thể thao giữ nhiệt 12 tiếng với thiết kế ergonomic"
+      description:
+        "Bình nước thể thao giữ nhiệt 12 tiếng với thiết kế ergonomic",
     },
     {
       id: 4,
@@ -104,7 +114,8 @@ export default function Store() {
       reviews: 67,
       category: "Phụ kiện",
       badge: "Giảm giá",
-      description: "Nón kết thể thao với khả năng chống UV và thông thoáng tối ưu"
+      description:
+        "Nón kết thể thao với khả năng chống UV và thông thoáng tối ưu",
     },
     {
       id: 5,
@@ -117,7 +128,8 @@ export default function Store() {
       reviews: 156,
       category: "Phụ kiện",
       badge: "",
-      description: "Vớ chạy bộ chống trượt với công nghệ kháng khuẩn và thấm hút"
+      description:
+        "Vớ chạy bộ chống trượt với công nghệ kháng khuẩn và thấm hút",
     },
     {
       id: 6,
@@ -130,17 +142,18 @@ export default function Store() {
       reviews: 91,
       category: "Phụ kiện",
       badge: "Hot",
-      description: "Túi chạy bộ nhẹ với nhiều ngăn, phản quang và khả năng chống nước"
-    }
+      description:
+        "Túi chạy bộ nhẹ với nhiều ngăn, phản quang và khả năng chống nước",
+    },
   ];
 
   const addToCart = (productId: number, price: number) => {
-    setCartCount(prev => prev + 1);
-    setCartTotal(prev => prev + price);
+    setCartCount((prev) => prev + 1);
+    setCartTotal((prev) => prev + price);
 
     toast({
       title: "Đã thêm vào giỏ hàng",
-      description: "Sản phẩm đã được thêm vào giỏ hàng của bạn"
+      description: "Sản phẩm đã được thêm vào giỏ hàng của bạn",
     });
   };
 
@@ -149,7 +162,7 @@ export default function Store() {
       toast({
         title: "Không thể áp dụng voucher",
         description: `Đơn hàng tối thiểu ${voucher.minimumAmount.toLocaleString()}đ`,
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -159,7 +172,7 @@ export default function Store() {
 
     toast({
       title: "Áp dụng voucher thành công!",
-      description: `Voucher "${voucher.code}" đã được áp dụng`
+      description: `Voucher "${voucher.code}" đã được áp dụng`,
     });
   };
 
@@ -167,7 +180,7 @@ export default function Store() {
     setSelectedVoucher(null);
     toast({
       title: "Đã hủy voucher",
-      description: "Voucher đã được gỡ bỏ khỏi đơn hàng"
+      description: "Voucher đã được gỡ bỏ khỏi đơn hàng",
     });
   };
 
@@ -175,7 +188,10 @@ export default function Store() {
     if (!selectedVoucher) return 0;
 
     if (selectedVoucher.discountType === "percentage") {
-      return Math.min(cartTotal * (selectedVoucher.discountValue / 100), cartTotal);
+      return Math.min(
+        cartTotal * (selectedVoucher.discountValue / 100),
+        cartTotal,
+      );
     } else {
       return Math.min(selectedVoucher.discountValue, cartTotal);
     }
@@ -190,8 +206,12 @@ export default function Store() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-vsm-black">Cửa hàng VSM</h1>
-              <p className="text-vsm-gray-medium">Sản phẩm chạy bộ chính hãng cho sinh viên</p>
+              <h1 className="text-3xl font-bold text-vsm-black">
+                Cửa hàng VSM
+              </h1>
+              <p className="text-vsm-gray-medium">
+                Sản phẩm chạy bộ chính hãng cho sinh viên
+              </p>
             </div>
             <div className="flex items-center space-x-3">
               <Button
@@ -223,7 +243,6 @@ export default function Store() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
         {/* Voucher Panel */}
         {showVouchers && (
           <Card className="mb-6 border-green-200 bg-green-50">
@@ -237,15 +256,19 @@ export default function Store() {
               {availableVouchers.length > 0 ? (
                 <div className="grid md:grid-cols-2 gap-4">
                   {availableVouchers.map((voucher) => (
-                    <Card key={voucher.id} className="border-2 border-dashed border-green-300 bg-white">
+                    <Card
+                      key={voucher.id}
+                      className="border-2 border-dashed border-green-300 bg-white"
+                    >
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-semibold text-green-800">{voucher.title}</h3>
+                          <h3 className="font-semibold text-green-800">
+                            {voucher.title}
+                          </h3>
                           <Badge className="bg-green-100 text-green-700">
                             {voucher.discountType === "percentage"
                               ? `${voucher.discountValue}%`
-                              : `${voucher.discountValue.toLocaleString()}đ`
-                            }
+                              : `${voucher.discountValue.toLocaleString()}đ`}
                           </Badge>
                         </div>
                         <p className="text-sm text-gray-600 mb-3">
@@ -253,7 +276,8 @@ export default function Store() {
                         </p>
                         {voucher.minimumAmount && (
                           <p className="text-xs text-gray-500 mb-3">
-                            Đơn hàng tối thiểu: {voucher.minimumAmount.toLocaleString()}đ
+                            Đơn hàng tối thiểu:{" "}
+                            {voucher.minimumAmount.toLocaleString()}đ
                           </p>
                         )}
                         <Button
@@ -338,10 +362,7 @@ export default function Store() {
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <Input 
-              placeholder="Tìm kiếm sản phẩm..." 
-              className="pl-10"
-            />
+            <Input placeholder="Tìm kiếm sản phẩm..." className="pl-10" />
           </div>
           <div className="flex items-center gap-4">
             <Button variant="outline" size="sm">
@@ -353,7 +374,11 @@ export default function Store() {
                 variant={viewMode === "grid" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("grid")}
-                className={viewMode === "grid" ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""}
+                className={
+                  viewMode === "grid"
+                    ? "bg-vsm-orange hover:bg-vsm-orange-dark"
+                    : ""
+                }
               >
                 <Grid3X3 className="w-4 h-4" />
               </Button>
@@ -361,7 +386,11 @@ export default function Store() {
                 variant={viewMode === "list" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("list")}
-                className={viewMode === "list" ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""}
+                className={
+                  viewMode === "list"
+                    ? "bg-vsm-orange hover:bg-vsm-orange-dark"
+                    : ""
+                }
               >
                 <List className="w-4 h-4" />
               </Button>
@@ -376,7 +405,11 @@ export default function Store() {
               key={category}
               variant={category === "Tất cả" ? "default" : "outline"}
               size="sm"
-              className={category === "Tất cả" ? "bg-vsm-orange hover:bg-vsm-orange-dark" : ""}
+              className={
+                category === "Tất cả"
+                  ? "bg-vsm-orange hover:bg-vsm-orange-dark"
+                  : ""
+              }
             >
               {category}
             </Button>
@@ -384,13 +417,18 @@ export default function Store() {
         </div>
 
         {/* Products Grid */}
-        <div className={`grid gap-6 ${
-          viewMode === "grid" 
-            ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" 
-            : "grid-cols-1"
-        }`}>
+        <div
+          className={`grid gap-6 ${
+            viewMode === "grid"
+              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              : "grid-cols-1"
+          }`}
+        >
           {products.map((product) => (
-            <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow group">
+            <Card
+              key={product.id}
+              className="overflow-hidden hover:shadow-lg transition-shadow group"
+            >
               {viewMode === "grid" ? (
                 <>
                   <div className="relative">
@@ -410,7 +448,7 @@ export default function Store() {
                       <Heart className="w-5 h-5" />
                     </Button>
                   </div>
-                  
+
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg leading-tight group-hover:text-vsm-orange transition-colors">
                       {product.name}
@@ -418,15 +456,21 @@ export default function Store() {
                     <div className="flex items-center space-x-2">
                       <div className="flex items-center">
                         <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                        <span className="text-sm text-gray-600 ml-1">{product.rating}</span>
+                        <span className="text-sm text-gray-600 ml-1">
+                          {product.rating}
+                        </span>
                       </div>
-                      <span className="text-sm text-gray-500">({product.reviews} đánh giá)</span>
+                      <span className="text-sm text-gray-500">
+                        ({product.reviews} đánh giá)
+                      </span>
                     </div>
                   </CardHeader>
-                  
+
                   <CardContent className="pt-0">
-                    <p className="text-gray-600 text-sm mb-4">{product.description}</p>
-                    
+                    <p className="text-gray-600 text-sm mb-4">
+                      {product.description}
+                    </p>
+
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-2">
                         <span className="text-xl font-bold text-vsm-orange">
@@ -439,7 +483,7 @@ export default function Store() {
                         )}
                       </div>
                     </div>
-                    
+
                     <Button
                       onClick={() => addToCart(product.id, product.priceNumber)}
                       className="w-full bg-vsm-orange hover:bg-vsm-orange-dark text-white"
@@ -467,22 +511,28 @@ export default function Store() {
                         <Heart className="w-5 h-5" />
                       </Button>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2 mb-2">
                       <div className="flex items-center">
                         <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                        <span className="text-sm text-gray-600 ml-1">{product.rating}</span>
+                        <span className="text-sm text-gray-600 ml-1">
+                          {product.rating}
+                        </span>
                       </div>
-                      <span className="text-sm text-gray-500">({product.reviews} đánh giá)</span>
+                      <span className="text-sm text-gray-500">
+                        ({product.reviews} đánh giá)
+                      </span>
                       {product.badge && (
                         <Badge className="bg-red-500 text-white text-xs">
                           {product.badge}
                         </Badge>
                       )}
                     </div>
-                    
-                    <p className="text-gray-600 text-sm mb-4">{product.description}</p>
-                    
+
+                    <p className="text-gray-600 text-sm mb-4">
+                      {product.description}
+                    </p>
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <span className="text-xl font-bold text-vsm-orange">
@@ -495,7 +545,9 @@ export default function Store() {
                         )}
                       </div>
                       <Button
-                        onClick={() => addToCart(product.id, product.priceNumber)}
+                        onClick={() =>
+                          addToCart(product.id, product.priceNumber)
+                        }
                         className="bg-vsm-orange hover:bg-vsm-orange-dark text-white"
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
