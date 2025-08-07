@@ -12,6 +12,7 @@ import News from "./pages/News";
 import Run from "./pages/Run";
 import Store from "./pages/Store";
 import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
