@@ -42,27 +42,36 @@ export default function Store() {
   }, []);
 
   const fetchVouchers = async () => {
+    const mockVouchers = [
+      { id: "1", title: "Giảm 50k cho đơn từ 300k", discount: 50000, minSpend: 300000, validUntil: "2024-12-31" },
+      { id: "2", title: "Free shipping toàn quốc", discount: 30000, minSpend: 200000, validUntil: "2024-12-25" }
+    ];
+
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-      const response = await fetch(`${apiUrl}/api/vouchers/user_1`);
+
+      // Set timeout to fail fast
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+      const response = await fetch(`${apiUrl}/api/vouchers/user_1`, {
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
-        // Use mock vouchers if backend not available
-        setAvailableVouchers([
-          { id: "1", title: "Giảm 50k cho đơn từ 300k", discount: 50000, minSpend: 300000, validUntil: "2024-12-31" },
-          { id: "2", title: "Free shipping toàn quốc", discount: 30000, minSpend: 200000, validUntil: "2024-12-25" }
-        ]);
-        return;
+        throw new Error('Backend response not ok');
       }
 
       const data = await response.json();
       setAvailableVouchers(data.vouchers || []);
     } catch (error) {
-      // Use mock vouchers on error
-      setAvailableVouchers([
-        { id: "1", title: "Giảm 50k cho đơn từ 300k", discount: 50000, minSpend: 300000, validUntil: "2024-12-31" },
-        { id: "2", title: "Free shipping toàn quốc", discount: 30000, minSpend: 200000, validUntil: "2024-12-25" }
-      ]);
+      // Use mock vouchers on any error
+      setAvailableVouchers(mockVouchers);
     }
   };
 
