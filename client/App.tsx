@@ -32,6 +32,7 @@ const App = () => (
               <Route path="/run" element={<Run />} />
               <Route path="/store" element={<Store />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/notifications" element={<Notifications />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
