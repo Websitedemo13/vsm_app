@@ -216,9 +216,51 @@ export default function Navigation() {
               </div>
               
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <Button className="w-full bg-vsm-orange hover:bg-vsm-orange-dark text-white">
-                  Đăng ký ngay
-                </Button>
+                {isAuthenticated ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3 px-3 py-2">
+                      <Avatar className="w-10 h-10">
+                        <AvatarFallback className="bg-vsm-orange text-white">
+                          {user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium text-gray-800">{user?.name}</p>
+                        <p className="text-sm text-gray-500">{user?.email}</p>
+                      </div>
+                      {user?.isPremium && (
+                        <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-xs">
+                          <Crown className="w-3 h-3 mr-1" />
+                          Premium
+                        </Badge>
+                      )}
+                    </div>
+                    <Button
+                      onClick={() => {
+                        logout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      variant="outline"
+                      className="w-full text-red-600 hover:text-red-700"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Đăng xuất
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button variant="outline" className="w-full">
+                        Đăng nhập
+                      </Button>
+                    </Link>
+                    <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button className="w-full bg-vsm-orange hover:bg-vsm-orange-dark text-white">
+                        Đăng ký ngay
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           )}
