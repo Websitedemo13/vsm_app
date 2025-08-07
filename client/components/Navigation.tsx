@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuth } from "./AuthGuard";
 import {
   Home,
   Newspaper,
@@ -12,7 +14,9 @@ import {
   X,
   Bell,
   Calendar,
-  TrendingUp
+  TrendingUp,
+  Crown,
+  LogOut
 } from "lucide-react";
 
 export default function Navigation() {
