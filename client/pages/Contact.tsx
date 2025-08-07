@@ -414,7 +414,7 @@ export default function Contact() {
                 Xem câu hỏi thường gặp
               </Button>
             </div>
-          </div>
+          </CardContent>
         </Card>
       </div>
     </div>
