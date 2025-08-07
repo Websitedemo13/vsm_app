@@ -88,7 +88,8 @@ export default function Notifications() {
 
   const markAllAsRead = async () => {
     try {
-      await fetch("/api/notifications/read-all", {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      await fetch(`${apiUrl}/api/notifications/read-all`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: "user_1" }),
