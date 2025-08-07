@@ -76,37 +76,40 @@ export default function Profile() {
   }, []);
 
   const fetchUserProfile = async () => {
+    const mockUser = {
+      id: "user_1",
+      name: "Nguyễn Văn A",
+      email: "user@vsm.vn",
+      university: "Đại học Kinh tế TP.HCM",
+      studentId: "1234567",
+      isPremium: false,
+      joinDate: Date.now() - 86400000 * 30
+    };
+
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-      const response = await fetch(`${apiUrl}/api/user/user_1`);
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+      const response = await fetch(`${apiUrl}/api/user/user_1`, {
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
-        // Use mock user data if backend not available
-        setUser({
-          id: "user_1",
-          name: "Nguyễn Văn A",
-          email: "user@vsm.vn",
-          university: "Đại học Kinh tế TP.HCM",
-          studentId: "1234567",
-          isPremium: false,
-          joinDate: Date.now() - 86400000 * 30
-        });
-        return;
+        throw new Error('Backend response not ok');
       }
 
       const data = await response.json();
       setUser(data.user);
     } catch (error) {
-      // Use mock user data on error
-      setUser({
-        id: "user_1",
-        name: "Nguyễn Văn A",
-        email: "user@vsm.vn",
-        university: "Đại học Kinh tế TP.HCM",
-        studentId: "1234567",
-        isPremium: false,
-        joinDate: Date.now() - 86400000 * 30
-      });
+      // Use mock user data on any error
+      setUser(mockUser);
     }
   };
 
@@ -189,7 +192,7 @@ export default function Profile() {
       toast({
         title: "🎉 Chúc mừng!",
         description:
-          "Bạn đã unlock thành công tài khoản Premium! Nhận ngay 2 voucher khuyến mãi.",
+          "Bạn đã unlock thành công tài khoản Premium! Nhận ngay 2 voucher khuy��n mãi.",
       });
     } catch (error) {
       toast({
