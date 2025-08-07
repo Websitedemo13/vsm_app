@@ -42,7 +42,7 @@ const getMockNotifications = (): Notification[] => [
   {
     id: "2",
     title: "🎁 Premium Upgrade Available",
-    message: "Nâng cấp Premium ngay với giá ưu đãi 299,000đ để unlock tất cả tính năng!",
+    message: "Nâng cấp Premium ngay với giá ưu đãi 299,000đ để unlock tất cả tính n��ng!",
     type: "product",
     timestamp: Date.now() - 7200000,
     isRead: false,
@@ -101,28 +101,30 @@ export default function Notifications() {
   };
 
   const markAsRead = async (notificationId: string) => {
+    // Always update UI immediately for better UX
+    setNotifications((prev) =>
+      prev.map((notif) =>
+        notif.id === notificationId ? { ...notif, isRead: true } : notif,
+      ),
+    );
+    setUnreadCount((prev) => Math.max(0, prev - 1));
+
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1000);
+
       await fetch(`${apiUrl}/api/notifications/read`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: "user_1", notificationId }),
+        signal: controller.signal,
       });
 
-      setNotifications((prev) =>
-        prev.map((notif) =>
-          notif.id === notificationId ? { ...notif, isRead: true } : notif,
-        ),
-      );
-      setUnreadCount((prev) => Math.max(0, prev - 1));
+      clearTimeout(timeoutId);
     } catch (error) {
-      // Still update UI locally even if API fails
-      setNotifications((prev) =>
-        prev.map((notif) =>
-          notif.id === notificationId ? { ...notif, isRead: true } : notif,
-        ),
-      );
-      setUnreadCount((prev) => Math.max(0, prev - 1));
+      // Silently fail - UI already updated
     }
   };
 
