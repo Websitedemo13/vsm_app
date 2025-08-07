@@ -150,6 +150,25 @@ export default function Navigation() {
                     )}
                   </Link>
                 ))}
+
+                {/* Mobile Notifications */}
+                <Link
+                  to="/notifications"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-colors relative ${
+                    isActive("/notifications")
+                      ? "text-vsm-orange bg-vsm-orange/10"
+                      : "text-vsm-black hover:text-vsm-orange hover:bg-vsm-orange/5"
+                  }`}
+                >
+                  <Bell className="w-5 h-5" />
+                  <span className="font-medium">Thông báo</span>
+                  {notificationCount > 0 && (
+                    <Badge className="bg-red-500 text-white text-xs">
+                      {notificationCount > 9 ? '9+' : notificationCount}
+                    </Badge>
+                  )}
+                </Link>
               </div>
               
               <div className="mt-4 pt-4 border-t border-gray-100">
