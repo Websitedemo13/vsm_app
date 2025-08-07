@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ShoppingCart, 
-  Star, 
-  Filter, 
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import {
+  ShoppingCart,
+  Star,
+  Filter,
   Search,
   Heart,
   Grid3X3,
-  List
+  List,
+  Ticket,
+  Gift,
+  Percent,
+  Tag,
+  CheckCircle
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
 
 export default function Store() {
   const [cartCount, setCartCount] = useState(0);
